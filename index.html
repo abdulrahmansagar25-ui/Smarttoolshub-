@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Free online Word Counter and Age Calculator. Calculate words, characters and your exact age instantly.">
+<meta name="description" content="Free online Word Counter, Age Calculator and Percentage Calculator.">
 <title>SmartToolsHub - Free Online Tools</title>
 <style>
 *{box-sizing:border-box}
@@ -17,8 +17,9 @@ main{max-width:900px;margin:25px auto;padding:0 15px}
 .intro h2{font-size:27px;margin-bottom:8px}
 .intro p{color:#64748b}
 .tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c;margin-bottom:25px}
-textarea,input{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
+textarea,input,select{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
 textarea{height:180px;resize:vertical}
+label{font-weight:bold}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
 .stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
 .stat strong{display:block;font-size:25px;color:#1756ad}
@@ -26,10 +27,11 @@ textarea{height:180px;resize:vertical}
 button{border:0;border-radius:8px;padding:12px 19px;font-size:15px;cursor:pointer;margin:5px 5px 5px 0}
 .primary{background:#1756ad;color:white}
 .secondary{background:#e7edf5;color:#172033}
-.note{font-size:13px;color:#64748b;margin-top:17px}
 .result{background:#edf4ff;padding:18px;border-radius:10px;margin-top:15px;line-height:1.9}
 .result strong{color:#1756ad}
 .hidden{display:none}
+.note{font-size:13px;color:#64748b;margin-top:17px}
+.calc-box{border:1px solid #e0e7f0;padding:16px;border-radius:10px;margin-top:18px}
 footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.intro h2{font-size:23px}}
 </style>
@@ -51,7 +53,6 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <h2>Word Counter</h2>
 <p>Count words, characters and reading time instantly.</p>
 <textarea id="textInput" placeholder="Start typing or paste your text here..."></textarea>
-
 <div class="stats">
 <div class="stat"><strong id="words">0</strong><span>Words</span></div>
 <div class="stat"><strong id="characters">0</strong><span>Characters</span></div>
@@ -60,7 +61,6 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
 <div class="stat"><strong id="reading">0 min</strong><span>Reading Time</span></div>
 </div>
-
 <button class="primary" onclick="copyText()">Copy Text</button>
 <button class="secondary" onclick="clearText()">Clear Text</button>
 <p class="note">Your text is processed in your browser.</p>
@@ -69,14 +69,46 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <section class="tool">
 <h2>Age Calculator</h2>
 <p>Enter your date of birth to calculate your age.</p>
-
-<label for="birthDate">Select your Date of Birth:</label>
+<label for="birthDate">Date of Birth:</label>
 <input type="date" id="birthDate">
-
 <button class="primary" onclick="calculateAge()">Calculate Age</button>
 <button class="secondary" onclick="clearAge()">Clear</button>
-
 <div id="ageResult" class="result hidden" aria-live="polite"></div>
+</section>
+
+<section class="tool">
+<h2>Percentage Calculator</h2>
+<p>Calculate percentages quickly and easily.</p>
+
+<div class="calc-box">
+<h3>1. Find a Percentage</h3>
+<label for="percent">Percentage (%)</label>
+<input type="number" id="percent" placeholder="Enter percentage">
+<label for="total">Number</label>
+<input type="number" id="total" placeholder="Enter number">
+<button class="primary" onclick="findPercentage()">Calculate</button>
+<div id="result1" class="result hidden" aria-live="polite"></div>
+</div>
+
+<div class="calc-box">
+<h3>2. What Percent Is One Number of Another?</h3>
+<label for="part">First Number</label>
+<input type="number" id="part" placeholder="Enter first number">
+<label for="whole">Second Number</label>
+<input type="number" id="whole" placeholder="Enter second number">
+<button class="primary" onclick="whatPercent()">Calculate</button>
+<div id="result2" class="result hidden" aria-live="polite"></div>
+</div>
+
+<div class="calc-box">
+<h3>3. Percentage Increase or Decrease</h3>
+<label for="oldValue">Old Value</label>
+<input type="number" id="oldValue" placeholder="Enter old value">
+<label for="newValue">New Value</label>
+<input type="number" id="newValue" placeholder="Enter new value">
+<button class="primary" onclick="percentageChange()">Calculate</button>
+<div id="result3" class="result hidden" aria-live="polite"></div>
+</div>
 </section>
 </main>
 
@@ -96,7 +128,6 @@ function countText(){
  const sentences=trimmed?(trimmed.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
  const paragraphs=trimmed?trimmed.split(/\n\s*\n/).filter(p=>p.trim()).length:0;
  const reading=words?Math.max(1,Math.ceil(words/200)):0;
-
  document.getElementById("words").textContent=words;
  document.getElementById("characters").textContent=characters;
  document.getElementById("noSpaces").textContent=noSpaces;
@@ -129,55 +160,60 @@ countText();
 function calculateAge(){
  const input=document.getElementById("birthDate").value;
  const result=document.getElementById("ageResult");
-
- if(!input){
-  alert("Please select your date of birth.");
-  return;
- }
-
+ if(!input){alert("Please select your date of birth.");return;}
  const parts=input.split("-").map(Number);
  const birth=new Date(parts[0],parts[1]-1,parts[2]);
  const today=new Date();
  today.setHours(0,0,0,0);
-
- if(birth>today){
-  alert("Date of birth cannot be in the future.");
-  return;
- }
-
+ if(birth>today){alert("Date of birth cannot be in the future.");return;}
  let years=today.getFullYear()-birth.getFullYear();
  let months=today.getMonth()-birth.getMonth();
  let days=today.getDate()-birth.getDate();
-
- if(days<0){
-  months--;
-  const previousMonthDays=new Date(today.getFullYear(),today.getMonth(),0).getDate();
-  days+=previousMonthDays;
- }
- if(months<0){
-  years--;
-  months+=12;
- }
-
+ if(days<0){months--;days+=new Date(today.getFullYear(),today.getMonth(),0).getDate();}
+ if(months<0){years--;months+=12;}
  let nextYear=today.getFullYear();
  let birthdayThisYear=new Date(nextYear,parts[1]-1,parts[2]);
- if(birthdayThisYear<today) nextYear++;
-
+ if(birthdayThisYear<today)nextYear++;
  let nextBirthday=new Date(nextYear,parts[1]-1,parts[2]);
- const daysLeft=Math.round((nextBirthday-today)/86400000);
-
- result.innerHTML=
-  "<strong>Your Age:</strong><br>"+
-  years+" Years, "+months+" Months, "+days+" Days<br>"+
-  "<strong>Next Birthday:</strong><br>"+
-  daysLeft+" days remaining";
-
+ let daysLeft=Math.round((nextBirthday-today)/86400000);
+ result.innerHTML="<strong>Your Age:</strong><br>"+years+" Years, "+months+" Months, "+days+" Days<br><strong>Next Birthday:</strong><br>"+daysLeft+" days remaining";
  result.classList.remove("hidden");
 }
 
 function clearAge(){
  document.getElementById("birthDate").value="";
  document.getElementById("ageResult").classList.add("hidden");
+}
+
+function showResult(id,message){
+ const box=document.getElementById(id);
+ box.textContent=message;
+ box.classList.remove("hidden");
+}
+
+function findPercentage(){
+ const p=parseFloat(document.getElementById("percent").value);
+ const n=parseFloat(document.getElementById("total").value);
+ if(!Number.isFinite(p)||!Number.isFinite(n)){alert("Please enter both numbers.");return;}
+ showResult("result1",p+"% of "+n+" = "+(p/100*n));
+}
+
+function whatPercent(){
+ const a=parseFloat(document.getElementById("part").value);
+ const b=parseFloat(document.getElementById("whole").value);
+ if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Please enter both numbers.");return;}
+ if(b===0){alert("The second number cannot be zero.");return;}
+ showResult("result2",a+" is "+(a/b*100).toFixed(2)+"% of "+b);
+}
+
+function percentageChange(){
+ const oldNum=parseFloat(document.getElementById("oldValue").value);
+ const newNum=parseFloat(document.getElementById("newValue").value);
+ if(!Number.isFinite(oldNum)||!Number.isFinite(newNum)){alert("Please enter both numbers.");return;}
+ if(oldNum===0){alert("Old value cannot be zero.");return;}
+ const change=((newNum-oldNum)/Math.abs(oldNum))*100;
+ let message=change>0?"Increase: ":change<0?"Decrease: ":"No change: ";
+ showResult("result3",message+Math.abs(change).toFixed(2)+"%");
 }
 </script>
 
