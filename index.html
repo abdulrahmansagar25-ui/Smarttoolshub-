@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartToolsHub - Free Online Tools</title>
+<meta name="description" content="Discover free online tools for images, PDF, text and calculations. Simple, fast and easy to use.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#fff;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #0000000d}
+.logo{font-size:23px;font-weight:bold;color:#1765d1}
+.hero{text-align:center;padding:65px 18px;background:#eaf2ff}
+.hero h1{font-size:36px;margin:0 0 15px}
+.hero p{color:#536078;font-size:17px}
+input{width:min(90%,500px);padding:15px;border:1px solid #ccd5e3;border-radius:9px;font-size:16px}
+main{max-width:1100px;margin:35px auto;padding:0 18px}
+h2{margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:white;padding:25px;border-radius:13px;box-shadow:0 3px 15px #00000008}
+.card h3{color:#1765d1}
+.card p{color:#667085}
+footer{text-align:center;padding:30px;color:#667085}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">SmartToolsHub</div>
+<div>Free Online Tools</div>
+</header>
+
+<section class="hero">
+<h1>Free Online Tools for Everyone</h1>
+<p>Simple, fast and useful tools for your daily tasks.</p>
+<input id="search" placeholder="Search your favourite tools..." oninput="filterTools()">
+</section>
+
+<main>
+<h2>Explore Our Tools</h2>
+<div class="grid" id="tools">
+<div class="card"><h3>Image Tools</h3><p>Compress, resize and convert images.</p></div>
+<div class="card"><h3>PDF Tools</h3><p>Manage and organize PDF documents.</p></div>
+<div class="card"><h3>Text Tools</h3><p>Count words and format your text.</p></div>
+<div class="card"><h3>Calculators</h3><p>Calculate percentages, age and dates.</p></div>
+<div class="card"><h3>Developer Tools</h3><p>Format JSON and encode text.</p></div>
+<div class="card"><h3>SEO Tools</h3><p>Create useful SEO metadata.</p></div>
+</div>
+</main>
+
+<footer>
+<p>© 2026 SmartToolsHub. All rights reserved.</p>
+<p>Free tools for everyone.</p>
+</footer>
+
+<script>
+function filterTools(){
+const query=document.getElementById('search').value.toLowerCase();
+document.querySelectorAll('.card').forEach(card=>{
+card.style.display=card.innerText.toLowerCase().includes(query)?'block':'none';
+});
+}
+</script>
+</body>
+</html>
