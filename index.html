@@ -1,11 +1,10 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs and reading time instantly.">
+<meta name="description" content="Free online Word Counter and Age Calculator. Calculate words, characters and your exact age instantly.">
 <title>SmartToolsHub - Free Online Tools</title>
 <style>
 *{box-sizing:border-box}
@@ -17,29 +16,22 @@ main{max-width:900px;margin:25px auto;padding:0 15px}
 .intro{text-align:center;margin-bottom:25px}
 .intro h2{font-size:27px;margin-bottom:8px}
 .intro p{color:#64748b}
-.tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c}
-textarea{width:100%;height:210px;padding:15px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;resize:vertical;outline-color:#2563eb}
+.tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c;margin-bottom:25px}
+textarea,input{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
+textarea{height:180px;resize:vertical}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
 .stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
 .stat strong{display:block;font-size:25px;color:#1756ad}
 .stat span{font-size:13px;color:#52627a}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-button{border:0;border-radius:8px;padding:12px 19px;font-size:15px;cursor:pointer}
+button{border:0;border-radius:8px;padding:12px 19px;font-size:15px;cursor:pointer;margin:5px 5px 5px 0}
 .primary{background:#1756ad;color:white}
 .secondary{background:#e7edf5;color:#172033}
-button:hover{opacity:.88}
 .note{font-size:13px;color:#64748b;margin-top:17px}
-.categories{margin-top:35px}
-.categories h2{text-align:center}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.card{background:white;padding:18px;border-radius:10px;text-align:center}
-.card p{font-size:13px;color:#64748b}
+.result{background:#edf4ff;padding:18px;border-radius:10px;margin-top:15px;line-height:1.9}
+.result strong{color:#1756ad}
+.hidden{display:none}
 footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
-@media(max-width:600px){
-.stats{grid-template-columns:repeat(2,1fr)}
-.cards{grid-template-columns:repeat(2,1fr)}
-.intro h2{font-size:23px}
-}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.intro h2{font-size:23px}}
 </style>
 </head>
 <body>
@@ -51,12 +43,13 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 
 <main>
 <section class="intro">
-<h2>Free Online Word Counter</h2>
-<p>Count words, characters and reading time instantly.</p>
+<h2>Free Online Tools</h2>
+<p>Simple, useful and free tools for everyone.</p>
 </section>
 
 <section class="tool">
-<h3>Enter or paste your text below</h3>
+<h2>Word Counter</h2>
+<p>Count words, characters and reading time instantly.</p>
 <textarea id="textInput" placeholder="Start typing or paste your text here..."></textarea>
 
 <div class="stats">
@@ -68,23 +61,22 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <div class="stat"><strong id="reading">0 min</strong><span>Reading Time</span></div>
 </div>
 
-<div class="actions">
 <button class="primary" onclick="copyText()">Copy Text</button>
 <button class="secondary" onclick="clearText()">Clear Text</button>
-</div>
-<p class="note">Your text is processed in your browser and is not sent to our server.</p>
+<p class="note">Your text is processed in your browser.</p>
 </section>
 
-<section class="categories">
-<h2>Explore More Free Tools</h2>
-<div class="cards">
-<div class="card"><h3>Image Tools</h3><p>Coming Soon</p></div>
-<div class="card"><h3>PDF Tools</h3><p>Coming Soon</p></div>
-<div class="card"><h3>Text Tools</h3><p>Word Counter available</p></div>
-<div class="card"><h3>Calculators</h3><p>Coming Soon</p></div>
-<div class="card"><h3>Developer Tools</h3><p>Coming Soon</p></div>
-<div class="card"><h3>SEO Tools</h3><p>Coming Soon</p></div>
-</div>
+<section class="tool">
+<h2>Age Calculator</h2>
+<p>Enter your date of birth to calculate your age.</p>
+
+<label for="birthDate">Select your Date of Birth:</label>
+<input type="date" id="birthDate">
+
+<button class="primary" onclick="calculateAge()">Calculate Age</button>
+<button class="secondary" onclick="clearAge()">Clear</button>
+
+<div id="ageResult" class="result hidden" aria-live="polite"></div>
 </section>
 </main>
 
@@ -93,54 +85,100 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 </footer>
 
 <script>
-const textInput = document.getElementById("textInput");
+const textInput=document.getElementById("textInput");
 
 function countText(){
- const text = textInput.value;
- const trimmed = text.trim();
+ const text=textInput.value;
+ const trimmed=text.trim();
+ const words=trimmed?trimmed.split(/\s+/).length:0;
+ const characters=text.length;
+ const noSpaces=text.replace(/\s/g,"").length;
+ const sentences=trimmed?(trimmed.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
+ const paragraphs=trimmed?trimmed.split(/\n\s*\n/).filter(p=>p.trim()).length:0;
+ const reading=words?Math.max(1,Math.ceil(words/200)):0;
 
- const words = trimmed ? trimmed.split(/\s+/).length : 0;
- const characters = text.length;
- const noSpaces = text.replace(/\s/g,"").length;
- const sentences = trimmed
-   ? (trimmed.match(/[.!?]+(?=\s|$)/g) || []).length
-   : 0;
- const paragraphs = trimmed
-   ? trimmed.split(/\n\s*\n/).filter(p => p.trim()).length
-   : 0;
- const reading = words ? Math.max(1,Math.ceil(words/200)) : 0;
-
- document.getElementById("words").textContent = words;
- document.getElementById("characters").textContent = characters;
- document.getElementById("noSpaces").textContent = noSpaces;
- document.getElementById("sentences").textContent = sentences;
- document.getElementById("paragraphs").textContent = paragraphs;
- document.getElementById("reading").textContent = reading + " min";
+ document.getElementById("words").textContent=words;
+ document.getElementById("characters").textContent=characters;
+ document.getElementById("noSpaces").textContent=noSpaces;
+ document.getElementById("sentences").textContent=sentences;
+ document.getElementById("paragraphs").textContent=paragraphs;
+ document.getElementById("reading").textContent=reading+" min";
 }
 
 function clearText(){
- textInput.value = "";
+ textInput.value="";
  countText();
  textInput.focus();
 }
 
 async function copyText(){
- if(!textInput.value){
-   alert("Please enter some text first.");
-   return;
- }
+ if(!textInput.value){alert("Please enter some text first.");return;}
  try{
-   await navigator.clipboard.writeText(textInput.value);
-   alert("Text copied successfully!");
+  await navigator.clipboard.writeText(textInput.value);
+  alert("Text copied successfully!");
  }catch(error){
-   textInput.select();
-   document.execCommand("copy");
-   alert("Text copied!");
+  textInput.select();
+  document.execCommand("copy");
+  alert("Text copied!");
  }
 }
 
 textInput.addEventListener("input",countText);
 countText();
+
+function calculateAge(){
+ const input=document.getElementById("birthDate").value;
+ const result=document.getElementById("ageResult");
+
+ if(!input){
+  alert("Please select your date of birth.");
+  return;
+ }
+
+ const parts=input.split("-").map(Number);
+ const birth=new Date(parts[0],parts[1]-1,parts[2]);
+ const today=new Date();
+ today.setHours(0,0,0,0);
+
+ if(birth>today){
+  alert("Date of birth cannot be in the future.");
+  return;
+ }
+
+ let years=today.getFullYear()-birth.getFullYear();
+ let months=today.getMonth()-birth.getMonth();
+ let days=today.getDate()-birth.getDate();
+
+ if(days<0){
+  months--;
+  const previousMonthDays=new Date(today.getFullYear(),today.getMonth(),0).getDate();
+  days+=previousMonthDays;
+ }
+ if(months<0){
+  years--;
+  months+=12;
+ }
+
+ let nextYear=today.getFullYear();
+ let birthdayThisYear=new Date(nextYear,parts[1]-1,parts[2]);
+ if(birthdayThisYear<today) nextYear++;
+
+ let nextBirthday=new Date(nextYear,parts[1]-1,parts[2]);
+ const daysLeft=Math.round((nextBirthday-today)/86400000);
+
+ result.innerHTML=
+  "<strong>Your Age:</strong><br>"+
+  years+" Years, "+months+" Months, "+days+" Days<br>"+
+  "<strong>Next Birthday:</strong><br>"+
+  daysLeft+" days remaining";
+
+ result.classList.remove("hidden");
+}
+
+function clearAge(){
+ document.getElementById("birthDate").value="";
+ document.getElementById("ageResult").classList.add("hidden");
+}
 </script>
 
 </body>
