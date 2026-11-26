@@ -1,65 +1,147 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs and reading time instantly.">
 <title>SmartToolsHub - Free Online Tools</title>
-<meta name="description" content="Discover free online tools for images, PDF, text and calculations. Simple, fast and easy to use.">
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
-header{background:#fff;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #0000000d}
-.logo{font-size:23px;font-weight:bold;color:#1765d1}
-.hero{text-align:center;padding:65px 18px;background:#eaf2ff}
-.hero h1{font-size:36px;margin:0 0 15px}
-.hero p{color:#536078;font-size:17px}
-input{width:min(90%,500px);padding:15px;border:1px solid #ccd5e3;border-radius:9px;font-size:16px}
-main{max-width:1100px;margin:35px auto;padding:0 18px}
-h2{margin-bottom:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.card{background:white;padding:25px;border-radius:13px;box-shadow:0 3px 15px #00000008}
-.card h3{color:#1765d1}
-.card p{color:#667085}
-footer{text-align:center;padding:30px;color:#667085}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#142b50;color:white;padding:22px 15px;text-align:center}
+header h1{margin:0;font-size:27px}
+header p{margin:8px 0 0;color:#dce8ff}
+main{max-width:900px;margin:25px auto;padding:0 15px}
+.intro{text-align:center;margin-bottom:25px}
+.intro h2{font-size:27px;margin-bottom:8px}
+.intro p{color:#64748b}
+.tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c}
+textarea{width:100%;height:210px;padding:15px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;resize:vertical;outline-color:#2563eb}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
+.stat strong{display:block;font-size:25px;color:#1756ad}
+.stat span{font-size:13px;color:#52627a}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button{border:0;border-radius:8px;padding:12px 19px;font-size:15px;cursor:pointer}
+.primary{background:#1756ad;color:white}
+.secondary{background:#e7edf5;color:#172033}
+button:hover{opacity:.88}
+.note{font-size:13px;color:#64748b;margin-top:17px}
+.categories{margin-top:35px}
+.categories h2{text-align:center}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:white;padding:18px;border-radius:10px;text-align:center}
+.card p{font-size:13px;color:#64748b}
+footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
+@media(max-width:600px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.cards{grid-template-columns:repeat(2,1fr)}
+.intro h2{font-size:23px}
+}
 </style>
 </head>
 <body>
+
 <header>
-<div class="logo">SmartToolsHub</div>
-<div>Free Online Tools</div>
+<h1>SmartToolsHub</h1>
+<p>Free Online Tools for Everyone</p>
 </header>
 
-<section class="hero">
-<h1>Free Online Tools for Everyone</h1>
-<p>Simple, fast and useful tools for your daily tasks.</p>
-<input id="search" placeholder="Search your favourite tools..." oninput="filterTools()">
+<main>
+<section class="intro">
+<h2>Free Online Word Counter</h2>
+<p>Count words, characters and reading time instantly.</p>
 </section>
 
-<main>
-<h2>Explore Our Tools</h2>
-<div class="grid" id="tools">
-<div class="card"><h3>Image Tools</h3><p>Compress, resize and convert images.</p></div>
-<div class="card"><h3>PDF Tools</h3><p>Manage and organize PDF documents.</p></div>
-<div class="card"><h3>Text Tools</h3><p>Count words and format your text.</p></div>
-<div class="card"><h3>Calculators</h3><p>Calculate percentages, age and dates.</p></div>
-<div class="card"><h3>Developer Tools</h3><p>Format JSON and encode text.</p></div>
-<div class="card"><h3>SEO Tools</h3><p>Create useful SEO metadata.</p></div>
+<section class="tool">
+<h3>Enter or paste your text below</h3>
+<textarea id="textInput" placeholder="Start typing or paste your text here..."></textarea>
+
+<div class="stats">
+<div class="stat"><strong id="words">0</strong><span>Words</span></div>
+<div class="stat"><strong id="characters">0</strong><span>Characters</span></div>
+<div class="stat"><strong id="noSpaces">0</strong><span>Characters (no spaces)</span></div>
+<div class="stat"><strong id="sentences">0</strong><span>Sentences</span></div>
+<div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
+<div class="stat"><strong id="reading">0 min</strong><span>Reading Time</span></div>
 </div>
+
+<div class="actions">
+<button class="primary" onclick="copyText()">Copy Text</button>
+<button class="secondary" onclick="clearText()">Clear Text</button>
+</div>
+<p class="note">Your text is processed in your browser and is not sent to our server.</p>
+</section>
+
+<section class="categories">
+<h2>Explore More Free Tools</h2>
+<div class="cards">
+<div class="card"><h3>Image Tools</h3><p>Coming Soon</p></div>
+<div class="card"><h3>PDF Tools</h3><p>Coming Soon</p></div>
+<div class="card"><h3>Text Tools</h3><p>Word Counter available</p></div>
+<div class="card"><h3>Calculators</h3><p>Coming Soon</p></div>
+<div class="card"><h3>Developer Tools</h3><p>Coming Soon</p></div>
+<div class="card"><h3>SEO Tools</h3><p>Coming Soon</p></div>
+</div>
+</section>
 </main>
 
 <footer>
 <p>© 2026 SmartToolsHub. All rights reserved.</p>
-<p>Free tools for everyone.</p>
 </footer>
 
 <script>
-function filterTools(){
-const query=document.getElementById('search').value.toLowerCase();
-document.querySelectorAll('.card').forEach(card=>{
-card.style.display=card.innerText.toLowerCase().includes(query)?'block':'none';
-});
+const textInput = document.getElementById("textInput");
+
+function countText(){
+ const text = textInput.value;
+ const trimmed = text.trim();
+
+ const words = trimmed ? trimmed.split(/\s+/).length : 0;
+ const characters = text.length;
+ const noSpaces = text.replace(/\s/g,"").length;
+ const sentences = trimmed
+   ? (trimmed.match(/[.!?]+(?=\s|$)/g) || []).length
+   : 0;
+ const paragraphs = trimmed
+   ? trimmed.split(/\n\s*\n/).filter(p => p.trim()).length
+   : 0;
+ const reading = words ? Math.max(1,Math.ceil(words/200)) : 0;
+
+ document.getElementById("words").textContent = words;
+ document.getElementById("characters").textContent = characters;
+ document.getElementById("noSpaces").textContent = noSpaces;
+ document.getElementById("sentences").textContent = sentences;
+ document.getElementById("paragraphs").textContent = paragraphs;
+ document.getElementById("reading").textContent = reading + " min";
 }
+
+function clearText(){
+ textInput.value = "";
+ countText();
+ textInput.focus();
+}
+
+async function copyText(){
+ if(!textInput.value){
+   alert("Please enter some text first.");
+   return;
+ }
+ try{
+   await navigator.clipboard.writeText(textInput.value);
+   alert("Text copied successfully!");
+ }catch(error){
+   textInput.select();
+   document.execCommand("copy");
+   alert("Text copied!");
+ }
+}
+
+textInput.addEventListener("input",countText);
+countText();
 </script>
+
 </body>
 </html>
