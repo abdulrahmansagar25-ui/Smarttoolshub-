@@ -4,36 +4,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Free online Word Counter, Age Calculator and Percentage Calculator.">
+<meta name="description" content="Free online Word Counter, Age Calculator, Percentage Calculator and PDF tools.">
 <title>SmartToolsHub - Free Online Tools</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
-header{background:#142b50;color:white;padding:22px 15px;text-align:center}
-header h1{margin:0;font-size:27px}
-header p{margin:8px 0 0;color:#dce8ff}
+header{background:#142b50;color:white;padding:24px 15px;text-align:center}
+header h1{margin:0;font-size:29px}
+header p{color:#dce8ff}
 main{max-width:900px;margin:25px auto;padding:0 15px}
 .intro{text-align:center;margin-bottom:25px}
-.intro h2{font-size:27px;margin-bottom:8px}
-.intro p{color:#64748b}
 .tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c;margin-bottom:25px}
-textarea,input,select{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
-textarea{height:180px;resize:vertical}
+textarea,input{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
+textarea{height:170px}
 label{font-weight:bold}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-.stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
-.stat strong{display:block;font-size:25px;color:#1756ad}
-.stat span{font-size:13px;color:#52627a}
-button{border:0;border-radius:8px;padding:12px 19px;font-size:15px;cursor:pointer;margin:5px 5px 5px 0}
+button{border:0;border-radius:8px;padding:12px 18px;font-size:15px;cursor:pointer;margin:5px 5px 5px 0}
 .primary{background:#1756ad;color:white}
 .secondary{background:#e7edf5;color:#172033}
-.result{background:#edf4ff;padding:18px;border-radius:10px;margin-top:15px;line-height:1.9}
-.result strong{color:#1756ad}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
+.stat strong{display:block;font-size:24px;color:#1756ad}
+.stat span{font-size:13px;color:#52627a}
+.result{background:#edf4ff;padding:15px;border-radius:9px;margin-top:12px;line-height:1.7}
 .hidden{display:none}
-.note{font-size:13px;color:#64748b;margin-top:17px}
 .calc-box{border:1px solid #e0e7f0;padding:16px;border-radius:10px;margin-top:18px}
-footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.intro h2{font-size:23px}}
+.pdf-box{background:#f8faff;border:1px solid #dce5f0;border-radius:10px;padding:17px;margin-top:18px}
+.note{font-size:13px;color:#64748b}
+footer{text-align:center;padding:25px;color:#64748b}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -44,42 +42,41 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 </header>
 
 <main>
-<section class="intro">
+<div class="intro">
 <h2>Free Online Tools</h2>
 <p>Simple, useful and free tools for everyone.</p>
-</section>
+</div>
 
+<!-- WORD COUNTER -->
 <section class="tool">
 <h2>Word Counter</h2>
-<p>Count words, characters and reading time instantly.</p>
-<textarea id="textInput" placeholder="Start typing or paste your text here..."></textarea>
+<p>Count words, characters and reading time.</p>
+<textarea id="textInput" placeholder="Enter or paste your text here..."></textarea>
 <div class="stats">
 <div class="stat"><strong id="words">0</strong><span>Words</span></div>
 <div class="stat"><strong id="characters">0</strong><span>Characters</span></div>
-<div class="stat"><strong id="noSpaces">0</strong><span>Characters (no spaces)</span></div>
+<div class="stat"><strong id="noSpaces">0</strong><span>No Spaces</span></div>
 <div class="stat"><strong id="sentences">0</strong><span>Sentences</span></div>
 <div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
 <div class="stat"><strong id="reading">0 min</strong><span>Reading Time</span></div>
 </div>
 <button class="primary" onclick="copyText()">Copy Text</button>
 <button class="secondary" onclick="clearText()">Clear Text</button>
-<p class="note">Your text is processed in your browser.</p>
 </section>
 
+<!-- AGE CALCULATOR -->
 <section class="tool">
 <h2>Age Calculator</h2>
-<p>Enter your date of birth to calculate your age.</p>
-<label for="birthDate">Date of Birth:</label>
+<label for="birthDate">Date of Birth</label>
 <input type="date" id="birthDate">
 <button class="primary" onclick="calculateAge()">Calculate Age</button>
 <button class="secondary" onclick="clearAge()">Clear</button>
-<div id="ageResult" class="result hidden" aria-live="polite"></div>
+<div id="ageResult" class="result hidden"></div>
 </section>
 
+<!-- PERCENTAGE CALCULATOR -->
 <section class="tool">
 <h2>Percentage Calculator</h2>
-<p>Calculate percentages quickly and easily.</p>
-
 <div class="calc-box">
 <h3>1. Find a Percentage</h3>
 <label for="percent">Percentage (%)</label>
@@ -87,7 +84,7 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <label for="total">Number</label>
 <input type="number" id="total" placeholder="Enter number">
 <button class="primary" onclick="findPercentage()">Calculate</button>
-<div id="result1" class="result hidden" aria-live="polite"></div>
+<div id="result1" class="result hidden"></div>
 </div>
 
 <div class="calc-box">
@@ -97,7 +94,7 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <label for="whole">Second Number</label>
 <input type="number" id="whole" placeholder="Enter second number">
 <button class="primary" onclick="whatPercent()">Calculate</button>
-<div id="result2" class="result hidden" aria-live="polite"></div>
+<div id="result2" class="result hidden"></div>
 </div>
 
 <div class="calc-box">
@@ -107,8 +104,43 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <label for="newValue">New Value</label>
 <input type="number" id="newValue" placeholder="Enter new value">
 <button class="primary" onclick="percentageChange()">Calculate</button>
-<div id="result3" class="result hidden" aria-live="polite"></div>
+<div id="result3" class="result hidden"></div>
 </div>
+</section>
+
+<!-- PDF TOOLS -->
+<section class="tool">
+<h2>Free PDF Tools</h2>
+<p>Merge, split and convert PDF files in your browser.</p>
+
+<div class="pdf-box">
+<h3>1. PDF Merge</h3>
+<p>Select two or more PDF files to combine them into one PDF.</p>
+<input type="file" id="mergeFiles" accept=".pdf,application/pdf" multiple>
+<button class="primary" onclick="mergePDFs()">Merge PDF Files</button>
+<div id="mergeStatus" class="result hidden" aria-live="polite"></div>
+</div>
+
+<div class="pdf-box">
+<h3>2. PDF Split</h3>
+<p>Extract a range of pages from a PDF into a new PDF.</p>
+<input type="file" id="splitFile" accept=".pdf,application/pdf">
+<label for="pageRange">Page range (example: 1-3)</label>
+<input type="text" id="pageRange" placeholder="Example: 1-3">
+<button class="primary" onclick="splitPDF()">Extract Pages</button>
+<div id="splitStatus" class="result hidden" aria-live="polite"></div>
+</div>
+
+<div class="pdf-box">
+<h3>3. PDF to Images</h3>
+<p>Convert PDF pages into PNG images. Each page can be downloaded separately.</p>
+<input type="file" id="imagePDF" accept=".pdf,application/pdf">
+<button class="primary" onclick="convertPDFImages()">Convert to Images</button>
+<div id="imageStatus" class="result hidden" aria-live="polite"></div>
+<div id="imageDownloads"></div>
+</div>
+
+<p class="note">PDF tools use browser-based processing. PDF files are not uploaded to our server. Large files may take longer to process. PDF conversion requires an internet connection to load its processing libraries.</p>
 </section>
 </main>
 
@@ -116,106 +148,177 @@ footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 <p>© 2026 SmartToolsHub. All rights reserved.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script>
 const textInput=document.getElementById("textInput");
 
 function countText(){
- const text=textInput.value;
- const trimmed=text.trim();
- const words=trimmed?trimmed.split(/\s+/).length:0;
- const characters=text.length;
- const noSpaces=text.replace(/\s/g,"").length;
- const sentences=trimmed?(trimmed.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
- const paragraphs=trimmed?trimmed.split(/\n\s*\n/).filter(p=>p.trim()).length:0;
- const reading=words?Math.max(1,Math.ceil(words/200)):0;
- document.getElementById("words").textContent=words;
- document.getElementById("characters").textContent=characters;
- document.getElementById("noSpaces").textContent=noSpaces;
- document.getElementById("sentences").textContent=sentences;
- document.getElementById("paragraphs").textContent=paragraphs;
- document.getElementById("reading").textContent=reading+" min";
+ const t=textInput.value;
+ const s=t.trim();
+ const w=s?s.split(/\s+/).length:0;
+ document.getElementById("words").textContent=w;
+ document.getElementById("characters").textContent=t.length;
+ document.getElementById("noSpaces").textContent=t.replace(/\s/g,"").length;
+ document.getElementById("sentences").textContent=s?(s.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
+ document.getElementById("paragraphs").textContent=s?s.split(/\n\s*\n/).filter(x=>x.trim()).length:0;
+ document.getElementById("reading").textContent=(w?Math.max(1,Math.ceil(w/200)):0)+" min";
 }
-
-function clearText(){
- textInput.value="";
- countText();
- textInput.focus();
-}
-
-async function copyText(){
- if(!textInput.value){alert("Please enter some text first.");return;}
- try{
-  await navigator.clipboard.writeText(textInput.value);
-  alert("Text copied successfully!");
- }catch(error){
-  textInput.select();
-  document.execCommand("copy");
-  alert("Text copied!");
- }
-}
-
 textInput.addEventListener("input",countText);
-countText();
+
+function clearText(){textInput.value="";countText();}
+async function copyText(){
+ if(!textInput.value){alert("Enter some text first.");return;}
+ try{await navigator.clipboard.writeText(textInput.value);alert("Text copied!");}
+ catch(e){textInput.select();document.execCommand("copy");alert("Text copied!");}
+}
 
 function calculateAge(){
- const input=document.getElementById("birthDate").value;
- const result=document.getElementById("ageResult");
- if(!input){alert("Please select your date of birth.");return;}
- const parts=input.split("-").map(Number);
- const birth=new Date(parts[0],parts[1]-1,parts[2]);
+ const v=document.getElementById("birthDate").value;
+ const out=document.getElementById("ageResult");
+ if(!v){alert("Select your date of birth.");return;}
+ const [y,m,d]=v.split("-").map(Number);
+ const b=new Date(y,m-1,d);
  const today=new Date();
  today.setHours(0,0,0,0);
- if(birth>today){alert("Date of birth cannot be in the future.");return;}
- let years=today.getFullYear()-birth.getFullYear();
- let months=today.getMonth()-birth.getMonth();
- let days=today.getDate()-birth.getDate();
+ if(b>today){alert("Date cannot be in the future.");return;}
+ let years=today.getFullYear()-y;
+ let months=today.getMonth()-(m-1);
+ let days=today.getDate()-d;
  if(days<0){months--;days+=new Date(today.getFullYear(),today.getMonth(),0).getDate();}
  if(months<0){years--;months+=12;}
  let nextYear=today.getFullYear();
- let birthdayThisYear=new Date(nextYear,parts[1]-1,parts[2]);
- if(birthdayThisYear<today)nextYear++;
- let nextBirthday=new Date(nextYear,parts[1]-1,parts[2]);
- let daysLeft=Math.round((nextBirthday-today)/86400000);
- result.innerHTML="<strong>Your Age:</strong><br>"+years+" Years, "+months+" Months, "+days+" Days<br><strong>Next Birthday:</strong><br>"+daysLeft+" days remaining";
- result.classList.remove("hidden");
+ if(new Date(nextYear,m-1,d)<today)nextYear++;
+ const next=new Date(nextYear,m-1,d);
+ const left=Math.round((next-today)/86400000);
+ out.textContent=years+" Years, "+months+" Months, "+days+" Days. Next birthday in "+left+" days.";
+ out.classList.remove("hidden");
 }
-
 function clearAge(){
  document.getElementById("birthDate").value="";
  document.getElementById("ageResult").classList.add("hidden");
 }
 
-function showResult(id,message){
- const box=document.getElementById(id);
- box.textContent=message;
- box.classList.remove("hidden");
+function showResult(id,msg){
+ const e=document.getElementById(id);
+ e.textContent=msg;
+ e.classList.remove("hidden");
 }
-
 function findPercentage(){
  const p=parseFloat(document.getElementById("percent").value);
  const n=parseFloat(document.getElementById("total").value);
- if(!Number.isFinite(p)||!Number.isFinite(n)){alert("Please enter both numbers.");return;}
- showResult("result1",p+"% of "+n+" = "+(p/100*n));
+ if(!Number.isFinite(p)||!Number.isFinite(n)){alert("Enter both numbers.");return;}
+ showResult("result1",p+"% of "+n+" = "+(p*n/100));
 }
-
 function whatPercent(){
  const a=parseFloat(document.getElementById("part").value);
  const b=parseFloat(document.getElementById("whole").value);
- if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Please enter both numbers.");return;}
- if(b===0){alert("The second number cannot be zero.");return;}
+ if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return;}
+ if(b===0){alert("Second number cannot be zero.");return;}
  showResult("result2",a+" is "+(a/b*100).toFixed(2)+"% of "+b);
 }
-
 function percentageChange(){
- const oldNum=parseFloat(document.getElementById("oldValue").value);
- const newNum=parseFloat(document.getElementById("newValue").value);
- if(!Number.isFinite(oldNum)||!Number.isFinite(newNum)){alert("Please enter both numbers.");return;}
- if(oldNum===0){alert("Old value cannot be zero.");return;}
- const change=((newNum-oldNum)/Math.abs(oldNum))*100;
- let message=change>0?"Increase: ":change<0?"Decrease: ":"No change: ";
- showResult("result3",message+Math.abs(change).toFixed(2)+"%");
+ const a=parseFloat(document.getElementById("oldValue").value);
+ const b=parseFloat(document.getElementById("newValue").value);
+ if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return;}
+ if(a===0){alert("Old value cannot be zero.");return;}
+ const c=(b-a)/Math.abs(a)*100;
+ showResult("result3",(c>0?"Increase: ":c<0?"Decrease: ":"No change: ")+Math.abs(c).toFixed(2)+"%");
+}
+
+// PDF UTILITIES
+function status(id,message){
+ const e=document.getElementById(id);
+ e.textContent=message;
+ e.classList.remove("hidden");
+}
+function downloadPDF(bytes,name){
+ const blob=new Blob([bytes],{type:"application/pdf"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function pdfReady(){
+ if(!window.PDFLib){alert("PDF library did not load. Check your internet connection and refresh the page.");return false;}
+ return true;
+}
+
+async function mergePDFs(){
+ if(!pdfReady())return;
+ const files=document.getElementById("mergeFiles").files;
+ if(files.length<2){alert("Select at least two PDF files.");return;}
+ try{
+  status("mergeStatus","Merging PDFs...");
+  const merged=await PDFLib.PDFDocument.create();
+  for(const file of files){
+   const bytes=await file.arrayBuffer();
+   const pdf=await PDFLib.PDFDocument.load(bytes);
+   const pages=await merged.copyPages(pdf,pdf.getPageIndices());
+   pages.forEach(p=>merged.addPage(p));
+  }
+  const result=await merged.save();
+  downloadPDF(result,"merged.pdf");
+  status("mergeStatus","Success! Your merged PDF is ready.");
+ }catch(e){
+  status("mergeStatus","Could not merge these PDFs. Check that the files are valid and not password-protected.");
+ }
+}
+
+async function splitPDF(){
+ if(!pdfReady())return;
+ const file=document.getElementById("splitFile").files[0];
+ const range=document.getElementById("pageRange").value.trim();
+ if(!file||!range){alert("Choose a PDF and enter a page range.");return;}
+ try{
+  const source=await PDFLib.PDFDocument.load(await file.arrayBuffer());
+  const total=source.getPageCount();
+  const match=range.match(/^(\d+)\s*-\s*(\d+)$/);
+  if(!match){alert("Enter a range like 1-3.");return;}
+  const start=Number(match[1]),end=Number(match[2]);
+  if(start<1||end<start||end>total){alert("Enter a valid page range. This PDF has "+total+" pages.");return;}
+  const output=await PDFLib.PDFDocument.create();
+  const pages=await output.copyPages(source,Array.from({length:end-start+1},(_,i)=>start-1+i));
+  pages.forEach(p=>output.addPage(p));
+  downloadPDF(await output.save(),"extracted-pages.pdf");
+  status("splitStatus","Success! Pages "+start+" to "+end+" have been extracted.");
+ }catch(e){
+  status("splitStatus","Could not split this PDF. Check that it is valid and not password-protected.");
+ }
+}
+
+async function convertPDFImages(){
+ if(!window.pdfjsLib){alert("PDF image library did not load. Check your internet connection and refresh.");return;}
+ const file=document.getElementById("imagePDF").files[0];
+ if(!file){alert("Choose a PDF file first.");return;}
+ const downloads=document.getElementById("imageDownloads");
+ downloads.innerHTML="";
+ try{
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  status("imageStatus","Converting PDF pages...");
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+  for(let i=1;i<=pdf.numPages;i++){
+   const page=await pdf.getPage(i);
+   const viewport=page.getViewport({scale:1.5});
+   const canvas=document.createElement("canvas");
+   canvas.width=viewport.width;
+   canvas.height=viewport.height;
+   await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
+   const url=canvas.toDataURL("image/png");
+   const link=document.createElement("a");
+   link.href=url;
+   link.download="page-"+i+".png";
+   link.textContent="Download Page "+i+" PNG";
+   link.style.display="block";
+   link.style.margin="12px 0";
+   downloads.appendChild(link);
+  }
+  status("imageStatus","Done! "+pdf.numPages+" page images are ready below.");
+ }catch(e){
+  status("imageStatus","Could not convert this PDF. Try another valid PDF file.");
+ }
 }
 </script>
-
 </body>
 </html>
