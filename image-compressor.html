@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image Compressor Online | SmartToolsHub</title>
+<meta name="description" content="Compress images online for free. Reduce JPG, PNG and WebP image file sizes with SmartToolsHub.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/image-compressor.html">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#081225;color:#f4f7ff;font-family:Arial,sans-serif}
+header{padding:22px 7%;background:#101e38;border-bottom:1px solid #263958}
+.logo{font-size:23px;font-weight:bold;color:#54a5ff}
+.logo span{color:white}
+main{max-width:850px;margin:45px auto;padding:20px}
+h1{text-align:center;font-size:36px}
+.intro{text-align:center;color:#aab8d0;line-height:1.7}
+.panel{background:#12223e;padding:25px;border:1px solid #294267;border-radius:18px;margin-top:25px}
+input,select{width:100%;padding:14px;background:#09162b;color:white;border:1px solid #385477;border-radius:9px;font-size:16px;margin-top:10px}
+label{display:block;margin-top:18px;color:#cbd8ec}
+button{padding:13px 20px;border:0;border-radius:9px;background:#267cf0;color:white;font-weight:bold;margin-top:18px;cursor:pointer}
+button:hover{background:#4594ff}
+.result{display:none;background:#0b1930;border-radius:13px;padding:20px;margin-top:20px}
+.result img{max-width:100%;max-height:300px;display:block;margin:15px auto;border-radius:10px}
+.info{color:#bdcbe0;line-height:1.8;margin-top:35px}
+a{color:#65adff;text-decoration:none}
+#message{color:#72c5ff;margin-top:15px}
+footer{text-align:center;color:#8fa3c1;padding:30px}
+@media(max-width:600px){h1{font-size:29px}main{margin:20px auto}}
+</style>
+</head>
+<body>
+<header><div class="logo">Smart<span>Tools</span>Hub</div></header>
+<main>
+<h1>Free Online Image Compressor</h1>
+<p class="intro">Reduce image file size quickly while keeping good visual quality. Free, private and easy to use.</p>
+<div class="panel">
+<label for="file">Choose an image</label>
+<input type="file" id="file" accept="image/jpeg,image/png,image/webp">
+
+<label for="quality">Image Quality</label>
+<select id="quality">
+<option value="0.9">High Quality</option>
+<option value="0.7" selected>Balanced Quality</option>
+<option value="0.5">Smaller File Size</option>
+<option value="0.3">Maximum Compression</option>
+</select>
+
+<button onclick="compressImage()">Compress Image</button>
+<div id="message"></div>
+
+<div class="result" id="result">
+<h2>Compressed Image</h2>
+<img id="preview" alt="Compressed image preview">
+<p id="details"></p>
+<a id="download" download="compressed-image.jpg">
+<button type="button">Download Compressed Image</button>
+</a>
+</div>
+</div>
+
+<section class="info">
+<h2>What is an Image Compressor?</h2>
+<p>An image compressor reduces the file size of an image so it can be stored and shared more easily.</p>
+<h2>How to Use This Tool</h2>
+<p>Select an image, choose your preferred quality and press Compress Image. Download the result when ready.</p>
+<h2>Your Privacy Matters</h2>
+<p>Images are processed directly in your browser. They are not uploaded to our server.</p>
+<p><a href="index.html">← Back to SmartToolsHub Home</a></p>
+</section>
+</main>
+<footer>© 2026 SmartToolsHub. All Rights Reserved.</footer>
+<script>
+let outputUrl='';
+function compressImage(){
+const file=document.getElementById('file').files[0];
+const msg=document.getElementById('message');
+const result=document.getElementById('result');
+result.style.display='none';
+msg.textContent='';
+if(!file){msg.textContent='Please select an image first.';return;}
+if(!file.type.startsWith('image/')){msg.textContent='Please select a valid image.';return;}
+const reader=new FileReader();
+reader.onerror=()=>msg.textContent='Could not read this image. Please try another.';
+reader.onload=e=>{
+const img=new Image();
+img.onerror=()=>msg.textContent='Could not open this image.';
+img.onload=()=>{
+const canvas=document.createElement('canvas');
+canvas.width=img.naturalWidth;
+canvas.height=img.naturalHeight;
+const ctx=canvas.getContext('2d');
+ctx.fillStyle='#ffffff';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(img,0,0);
+canvas.toBlob(blob=>{
+if(!blob){msg.textContent='Compression failed. Please try another image.';return;}
+if(outputUrl)URL.revokeObjectURL(outputUrl);
+outputUrl=URL.createObjectURL(blob);
+document.getElementById('preview').src=outputUrl;
+document.getElementById('download').href=outputUrl;
+document.getElementById('details').textContent=
+'Original size: '+formatSize(file.size)+' | Compressed size: '+formatSize(blob.size);
+result.style.display='block';
+msg.textContent='Image compressed successfully!';
+},'image/jpeg',Number(document.getElementById('quality').value));
+};
+img.src=e.target.result;
+};
+reader.readAsDataURL(file);
+}
+function formatSize(bytes){
+if(bytes<1024)return bytes+' B';
+if(bytes<1024*1024)return (bytes/1024).toFixed(1)+' KB';
+return (bytes/(1024*1024)).toFixed(2)+' MB';
+}
+</script>
+</body>
+</html>
