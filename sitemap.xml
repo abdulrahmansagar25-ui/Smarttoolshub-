@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/</loc>
   </url>
+
+  <url>
+    <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/word-counter.html</loc>
+  </url>
+
+  <url>
+    <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/age-calculator.html</loc>
+  </url>
+
+  <url>
+    <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/percentage-calculator.html</loc>
+  </url>
+
+  <url>
+    <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/image-compressor.html</loc>
+  </url>
+
+  <url>
+    <loc>https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/pdf-tools.html</loc>
+  </url>
+
 </urlset>
