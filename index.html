@@ -1,568 +1,340 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="google-site-verification" content="ik2AQioRsBKtcPky0WwnTswrplpAKyHhLlFgEtZaUP8" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Free online Word Counter, Age Calculator, Percentage Calculator and PDF tools.">
-<title>SmartToolsHub - Free Online Tools</title>
-<style>
-*{box-sizing:border-box}
-<section id="image-compressor" style="max-width:650px;margin:30px auto;padding:22px;background:#f4f7fb;border-radius:15px;color:#222;font-family:Arial,sans-serif;">
-  <h2 style="text-align:center;color:#1769aa;">Image Compressor</h2>
-  <p style="text-align:center;">Compress your image and download it in a smaller size.</p>
-
-  <label for="ic-file"><b>Select Image:</b></label>
-  <input id="ic-file" type="file" accept="image/*" style="display:block;margin:12px 0;width:100%;">
-
-  <label for="ic-quality"><b>Image Quality:</b> <span id="ic-quality-value">75%</span></label>
-  <input id="ic-quality" type="range" min="10" max="100" value="75" style="width:100%;margin:12px 0;">
-
-  <label for="ic-format"><b>Output Format:</b></label>
-  <select id="ic-format" style="display:block;width:100%;padding:10px;margin:10px 0;">
-    <option value="image/jpeg">JPG</option>
-    <option value="image/webp">WEBP</option>
-  </select>
-
-  <button id="ic-compress" style="width:100%;padding:13px;background:#1769aa;color:white;border:0;border-radius:8px;font-size:16px;cursor:pointer;">Compress Image</button>
-
-  <p id="ic-status" style="margin-top:15px;"></p>
-  <img id="ic-preview" alt="Compressed image preview" style="display:none;max-width:100%;margin:15px auto;border-radius:8px;">
-  <p id="ic-size"></p>
-  <a id="ic-download" style="display:none;background:#168447;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;" download="compressed-image.jpg">Download Compressed Image</a>
-</section>
-
-<script>
-(() => {
-  const fileInput = document.getElementById("ic-file");
-  const qualityInput = document.getElementById("ic-quality");
-  const qualityValue = document.getElementById("ic-quality-value");
-  const formatInput = document.getElementById("ic-format");
-  const compressButton = document.getElementById("ic-compress");
-  const status = document.getElementById("ic-status");
-  const preview = document.getElementById("ic-preview");
-  const sizeText = document.getElementById("ic-size");
-  const download = document.getElementById("ic-download");
-
-  let imageUrl = null;
-
-  qualityInput.addEventListener("input", () => {
-    qualityValue.textContent = qualityInput.value + "%";
-  });
-
-  compressButton.addEventListener("click", () => {
-    const file = fileInput.files[0];
-
-    if (!file) {
-      status.textContent = "Please select an image first.";
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      status.textContent = "Please select a valid image.";
-      return;
-    }
-
-    status.textContent = "Compressing image...";
-    preview.style.display = "none";
-    download.style.display = "none";
-    sizeText.textContent = "";
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const img = new Image();
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        const format = formatInput.value;
-        const quality = Number(qualityInput.value) / 100;
-
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            status.textContent = "Compression failed. Try another image.";
-            return;
-          }
-
-          if (imageUrl) URL.revokeObjectURL(imageUrl);
-          imageUrl = URL.createObjectURL(blob);
-
-          preview.src = imageUrl;
-          preview.style.display = "block";
-
-          const originalKB = (file.size / 1024).toFixed(1);
-          const compressedKB = (blob.size / 1024).toFixed(1);
-          const saved = ((1 - blob.size / file.size) * 100).toFixed(1);
-
-          sizeText.textContent =
-            "Original: " + originalKB + " KB | Compressed: " +
-            compressedKB + " KB | Size change: " +
-            (blob.size <= file.size ? saved + "% smaller" : Math.abs(saved) + "% larger");
-
-          const extension = format === "image/webp" ? "webp" : "jpg";
-          download.href = imageUrl;
-          download.download = "compressed-image." + extension;
-          download.style.display = "inline-block";
-
-          status.textContent = "Image compression complete!";
-        }, format, quality);
-      };
-
-      img.onerror = () => {
-        status.textContent = "Could not read this image.";
-      };
-
-      img.src = reader.result;
-    };
-
-    reader.onerror = () => {
-      status.textContent = "Could not load the selected file.";
-    };
-
-    reader.readAsDataURL(file);
-  });
-})();
-</script>
-
-body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
-header{background:#142b50;color:white;padding:24px 15px;text-align:center}
-header h1{margin:0;font-size:29px}
-header p{color:#dce8ff}
-main{max-width:900px;margin:25px auto;padding:0 15px}
-.intro{text-align:center;margin-bottom:25px}
-.tool{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 18px #0000000c;margin-bottom:25px}
-textarea,input{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:9px;font-size:16px;margin:8px 0 15px}
-textarea{height:170px}
-label{font-weight:bold}
-button{border:0;border-radius:8px;padding:12px 18px;font-size:15px;cursor:pointer;margin:5px 5px 5px 0}
-.primary{background:#1756ad;color:white}
-.secondary{background:#e7edf5;color:#172033}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-.stat{background:#edf4ff;padding:16px 8px;text-align:center;border-radius:10px}
-.stat strong{display:block;font-size:24px;color:#1756ad}
-.stat span{font-size:13px;color:#52627a}
-.result{background:#edf4ff;padding:15px;border-radius:9px;margin-top:12px;line-height:1.7}
-.hidden{display:none}
-.calc-box{border:1px solid #e0e7f0;padding:16px;border-radius:10px;margin-top:18px}
-.pdf-box{background:#f8faff;border:1px solid #dce5f0;border-radius:10px;padding:17px;margin-top:18px}
-.note{font-size:13px;color:#64748b}
-footer{text-align:center;padding:25px;color:#64748b}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
-</style>
+<head>
+  <meta name="google-site-verification" content="ik2AQioRsBKtcPky0WwnTswrplpAKyHhLlFgEtZaUP8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartToolsHub offers free online tools including Word Counter, Age Calculator, Percentage Calculator, PDF tools and Image Compressor.">
+  <meta name="theme-color" content="#080f1e">
+  <title>SmartToolsHub — Free Online Tools</title>
+  <style>
+    :root{--bg:#080f1e;--panel:#101b2e;--panel2:#14223a;--line:rgba(164,190,230,.14);--text:#f4f7ff;--muted:#9aabc5;--blue:#3988ff;--cyan:#39d5ed;--shadow:0 22px 60px rgba(0,0,0,.28)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:100px}
+    body{margin:0;background:radial-gradient(ellipse at 50% -15%,#18345d 0,transparent 42%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.6}
+    button,input,textarea,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(8,15,30,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:11px;font-size:19px;font-weight:800;letter-spacing:-.5px}
+    .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#061326;font-weight:950;box-shadow:0 8px 25px #3988ff55}
+    .brand span:last-child{color:#fff}.brand em{font-style:normal;color:var(--cyan)}
+    .navlinks{display:flex;align-items:center;gap:25px;color:#b6c4da;font-size:13px;font-weight:650}
+    .navlinks a:hover{color:#fff}
+    .nav-cta{padding:10px 16px;border-radius:10px;background:#1b70e8;color:white;font-size:13px;font-weight:750}
+    .hero{padding:86px 0 54px;text-align:center;position:relative}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #4b91f855;border-radius:30px;background:#1b4c852c;color:#9ccaff;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+    .eyebrow i{width:7px;height:7px;border-radius:50%;background:#43d9c4;box-shadow:0 0 12px #43d9c4}
+    h1{font-size:clamp(38px,6vw,66px);line-height:1.08;letter-spacing:-2.8px;margin:23px auto 17px;max-width:850px}
+    h1 span{background:linear-gradient(90deg,#6daaff,#45d7e9);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy{max-width:620px;margin:0 auto;color:var(--muted);font-size:16px}
+    .search-wrap{max-width:620px;margin:32px auto 0;position:relative}
+    .search-wrap input{width:100%;padding:18px 20px 18px 52px;border:1px solid #6385b64a;border-radius:14px;background:#101d32;color:white;outline:none;box-shadow:var(--shadow)}
+    .search-wrap input:focus{border-color:#3988ff;box-shadow:0 0 0 4px #3988ff22}
+    .search-icon{position:absolute;left:19px;top:15px;color:#8fa9ca;font-size:20px}
+    .hero-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:22px;color:#9aabc5;font-size:12px}
+    .hero-meta span:before{content:"✓";color:#4bd6c4;margin-right:7px;font-weight:900}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:22px 0 20px}
+    .section-kicker{font-size:11px;letter-spacing:1.7px;text-transform:uppercase;color:#69b8ff;font-weight:850}
+    h2{font-size:27px;letter-spacing:-.8px;margin:5px 0 0}
+    .section-desc{color:var(--muted);font-size:13px;margin:4px 0 0}
+    .tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+    .tool-card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:205px;padding:23px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(22,39,65,.96),rgba(13,24,42,.96));box-shadow:0 12px 35px #00000018;transition:transform .22s,border-color .22s,box-shadow .22s}
+    .tool-card:hover{transform:translateY(-5px);border-color:#438ffb88;box-shadow:0 18px 42px #0004}
+    .tool-icon{width:47px;height:47px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#236ed1,#2bbed1);color:white;font-size:21px;font-weight:800;box-shadow:0 8px 22px #1c74d744}
+    .tool-card h3{margin:17px 0 5px;font-size:17px}
+    .tool-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+    .card-link{margin-top:auto;padding-top:17px;color:#79b7ff;font-size:12px;font-weight:800;letter-spacing:.3px}
+    .card-link span{padding-left:5px}
+    .tool-section{margin:58px 0 0;scroll-margin-top:100px}
+    .panel{padding:28px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(17,30,51,.98),rgba(12,22,39,.98));box-shadow:var(--shadow)}
+    .panel-title{display:flex;align-items:center;gap:13px;margin-bottom:8px}
+    .panel-title .tool-icon{width:42px;height:42px;font-size:18px}
+    .panel-title h2{font-size:23px;margin:0}
+    .panel-intro{margin:0 0 22px 55px;color:var(--muted);font-size:13px}
+    label{display:block;margin:12px 0 7px;color:#d9e5f7;font-size:13px;font-weight:700}
+    textarea,input[type="text"],input[type="number"],input[type="date"],input[type="file"],select{width:100%;padding:13px 14px;border:1px solid #52678366;border-radius:10px;background:#0b1628;color:#f4f7ff;outline:none}
+    textarea:focus,input:focus,select:focus{border-color:#3988ff;box-shadow:0 0 0 3px #3988ff20}
+    textarea{min-height:155px;resize:vertical}
+    input[type="file"]{padding:10px;color:#aebdd2}
+    input[type="range"]{width:100%;accent-color:#3988ff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 17px;border:0;border-radius:9px;background:linear-gradient(100deg,#2878ed,#28a9db);color:white;font-size:13px;font-weight:800;cursor:pointer;transition:filter .2s,transform .2s}
+    .btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+    .btn.alt{background:#24344e;color:#dbe7f8}
+    .btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+    .stat{padding:15px 10px;text-align:center;border:1px solid #6b91c42a;border-radius:11px;background:#142641}
+    .stat strong{display:block;font-size:23px;color:#78baff;line-height:1.3}
+    .stat span{font-size:11px;color:#a7b8d0}
+    .result{margin-top:14px;padding:14px 16px;border:1px solid #3988ff55;border-radius:10px;background:#14315a;color:#dcecff;line-height:1.7;font-size:14px}
+    .hidden{display:none!important}
+    .subgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .subbox{padding:19px;border:1px solid var(--line);border-radius:13px;background:#0e1a2d}
+    .subbox h3{margin:0 0 6px;font-size:15px}
+    .subbox p{margin:0 0 13px;color:var(--muted);font-size:12px}
+    .subbox .btn{margin-top:12px}
+    .note{margin-top:17px;color:#91a3bd;font-size:11px;line-height:1.6}
+    .download-list a{display:inline-block;margin:9px 9px 0 0;padding:9px 12px;border-radius:8px;background:#173d67;color:#a9d1ff;font-size:12px;font-weight:700}
+    .preview{display:block;max-width:100%;max-height:360px;margin:16px auto;border-radius:12px;border:1px solid var(--line)}
+    .footer{margin-top:80px;padding:30px 0;border-top:1px solid var(--line);color:#8799b4;text-align:center;font-size:12px}
+    .footer strong{color:#dce8f8}
+    .empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted);border:1px dashed #526783;border-radius:13px}
+    @media(max-width:760px){.nav{height:66px}.navlinks{gap:12px}.navlinks a:not(.nav-cta){display:none}.hero{padding:64px 0 40px}h1{letter-spacing:-1.6px}.tool-grid{grid-template-columns:repeat(2,1fr)}.tool-card{min-height:195px;padding:18px}.panel{padding:20px}.subgrid{grid-template-columns:1fr}}
+    @media(max-width:480px){.wrap{width:min(100% - 26px,1120px)}.brand{font-size:16px}.nav-cta{padding:9px 12px}.tool-grid{grid-template-columns:1fr 1fr;gap:10px}.tool-card{padding:15px;min-height:190px}.tool-card h3{font-size:14px}.tool-card p{font-size:11px}.tool-icon{width:40px;height:40px;font-size:18px}.stats{grid-template-columns:repeat(2,1fr)}.section-head{align-items:start;flex-direction:column}.panel-title h2{font-size:20px}.panel-intro{margin-left:0}}
+  </style>
 </head>
 <body>
+  <div class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="SmartToolsHub home"><span class="brand-mark">S</span><span>Smart<em>Tools</em>Hub</span></a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#tools">All Tools</a><a href="#about">About</a><a class="nav-cta" href="#tools">Explore Tools</a>
+      </nav>
+    </div>
+  </div>
 
-<header>
-<h1>SmartToolsHub</h1>
-<p>Free Online Tools for Everyone</p>
-</header>
+  <header class="hero wrap" id="home">
+    <div class="eyebrow"><i></i> SIMPLE. SMART. FREE.</div>
+    <h1>Powerful tools for your<br><span>everyday work.</span></h1>
+    <p class="hero-copy">A carefully selected collection of free online tools. Get things done quickly with a clean, simple experience.</p>
+    <div class="search-wrap"><span class="search-icon">⌕</span><input id="toolSearch" type="search" placeholder="Search a tool — e.g. PDF, age, words..." aria-label="Search tools"></div>
+    <div class="hero-meta"><span>Free to use</span><span>Easy to use</span><span>Works in your browser</span></div>
+  </header>
 
-<main>
-<div class="intro">
-<h2>Free Online Tools</h2>
-<p>Simple, useful and free tools for everyone.</p>
-</div>
+  <main class="wrap" id="tools">
+    <div class="section-head">
+      <div><div class="section-kicker">Tool collection</div><h2>Explore our tools</h2><p class="section-desc">Choose a tool and get started in seconds.</p></div>
+      <div class="section-desc" id="toolCount">5 tools available</div>
+    </div>
 
-<!-- WORD COUNTER -->
-<section class="tool">
-<h2>Word Counter</h2>
-<p>Count words, characters and reading time.</p>
-<textarea id="textInput" placeholder="Enter or paste your text here..."></textarea>
-<div class="stats">
-<div class="stat"><strong id="words">0</strong><span>Words</span></div>
-<div class="stat"><strong id="characters">0</strong><span>Characters</span></div>
-<div class="stat"><strong id="noSpaces">0</strong><span>No Spaces</span></div>
-<div class="stat"><strong id="sentences">0</strong><span>Sentences</span></div>
-<div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
-<div class="stat"><strong id="reading">0 min</strong><span>Reading Time</span></div>
-</div>
-<button class="primary" onclick="copyText()">Copy Text</button>
-<button class="secondary" onclick="clearText()">Clear Text</button>
-</section>
+    <div class="tool-grid" id="toolGrid">
+      <a class="tool-card" data-search="word counter text character sentence paragraph reading" href="#word-counter"><span class="tool-icon">W</span><h3>Word Counter</h3><p>Count words, characters, sentences and reading time.</p><span class="card-link">OPEN TOOL <span>↗</span></span></a>
+      <a class="tool-card" data-search="age calculator date birth birthday" href="#age-calculator"><span class="tool-icon">⌁</span><h3>Age Calculator</h3><p>Calculate your exact age in years, months and days.</p><span class="card-link">OPEN TOOL <span>↗</span></span></a>
+      <a class="tool-card" data-search="percentage calculator percent increase decrease" href="#percentage-calculator"><span class="tool-icon">％</span><h3>Percentage Calculator</h3><p>Find percentages and calculate increases or decreases.</p><span class="card-link">OPEN TOOL <span>↗</span></span></a>
+      <a class="tool-card" data-search="pdf merge split extract images convert" href="#pdf-tools"><span class="tool-icon">PDF</span><h3>PDF Tools</h3><p>Merge PDFs, extract pages and convert PDF pages to images.</p><span class="card-link">OPEN TOOL <span>↗</span></span></a>
+      <a class="tool-card" data-search="image compressor compress jpg webp photo size" href="#image-compressor"><span class="tool-icon">▧</span><h3>Image Compressor</h3><p>Reduce image file size and download a compressed copy.</p><span class="card-link">OPEN TOOL <span>↗</span></span></a>
+      <div class="empty hidden" id="noTools">No matching tools found. Try another search.</div>
+    </div>
 
-<!-- AGE CALCULATOR -->
-<section class="tool">
-<h2>Age Calculator</h2>
-<label for="birthDate">Date of Birth</label>
-<input type="date" id="birthDate">
-<button class="primary" onclick="calculateAge()">Calculate Age</button>
-<button class="secondary" onclick="clearAge()">Clear</button>
-<div id="ageResult" class="result hidden"></div>
-</section>
+    <section class="tool-section" id="word-counter">
+      <div class="panel">
+        <div class="panel-title"><span class="tool-icon">W</span><h2>Word Counter</h2></div>
+        <p class="panel-intro">Count words, characters and estimate reading time instantly.</p>
+        <textarea id="textInput" placeholder="Type or paste your text here..."></textarea>
+        <div class="stats">
+          <div class="stat"><strong id="words">0</strong><span>Words</span></div>
+          <div class="stat"><strong id="characters">0</strong><span>Characters</span></div>
+          <div class="stat"><strong id="noSpaces">0</strong><span>Without spaces</span></div>
+          <div class="stat"><strong id="sentences">0</strong><span>Sentences</span></div>
+          <div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
+          <div class="stat"><strong id="reading">0 min</strong><span>Reading time</span></div>
+        </div>
+        <div class="btn-row"><button class="btn" onclick="copyText()">Copy Text</button><button class="btn alt" onclick="clearText()">Clear Text</button></div>
+      </div>
+    </section>
 
-<!-- PERCENTAGE CALCULATOR -->
-<section class="tool">
-<h2>Percentage Calculator</h2>
-<div class="calc-box">
-<h3>1. Find a Percentage</h3>
-<label for="percent">Percentage (%)</label>
-<input type="number" id="percent" placeholder="Enter percentage">
-<label for="total">Number</label>
-<input type="number" id="total" placeholder="Enter number">
-<button class="primary" onclick="findPercentage()">Calculate</button>
-<div id="result1" class="result hidden"></div>
-</div>
+    <section class="tool-section" id="age-calculator">
+      <div class="panel">
+        <div class="panel-title"><span class="tool-icon">⌁</span><h2>Age Calculator</h2></div>
+        <p class="panel-intro">Enter a date of birth to calculate an age breakdown.</p>
+        <label for="birthDate">Date of birth</label><input type="date" id="birthDate">
+        <div class="btn-row"><button class="btn" onclick="calculateAge()">Calculate Age</button><button class="btn alt" onclick="clearAge()">Clear</button></div>
+        <div id="ageResult" class="result hidden" aria-live="polite"></div>
+      </div>
+    </section>
 
-<div class="calc-box">
-<h3>2. What Percent Is One Number of Another?</h3>
-<label for="part">First Number</label>
-<input type="number" id="part" placeholder="Enter first number">
-<label for="whole">Second Number</label>
-<input type="number" id="whole" placeholder="Enter second number">
-<button class="primary" onclick="whatPercent()">Calculate</button>
-<div id="result2" class="result hidden"></div>
-</div>
+    <section class="tool-section" id="percentage-calculator">
+      <div class="panel">
+        <div class="panel-title"><span class="tool-icon">％</span><h2>Percentage Calculator</h2></div>
+        <p class="panel-intro">Three quick ways to calculate percentages.</p>
+        <div class="subgrid">
+          <div class="subbox"><h3>Find a percentage</h3><p>What is X% of a number?</p><label for="percent">Percentage (%)</label><input type="number" id="percent" placeholder="e.g. 20"><label for="total">Number</label><input type="number" id="total" placeholder="e.g. 150"><button class="btn" onclick="findPercentage()">Calculate</button><div id="result1" class="result hidden"></div></div>
+          <div class="subbox"><h3>What percent is it?</h3><p>Find what percentage one number is of another.</p><label for="part">First number</label><input type="number" id="part" placeholder="e.g. 25"><label for="whole">Second number</label><input type="number" id="whole" placeholder="e.g. 100"><button class="btn" onclick="whatPercent()">Calculate</button><div id="result2" class="result hidden"></div></div>
+          <div class="subbox"><h3>Percentage change</h3><p>Calculate an increase or decrease.</p><label for="oldValue">Old value</label><input type="number" id="oldValue" placeholder="e.g. 80"><label for="newValue">New value</label><input type="number" id="newValue" placeholder="e.g. 100"><button class="btn" onclick="percentageChange()">Calculate</button><div id="result3" class="result hidden"></div></div>
+        </div>
+      </div>
+    </section>
 
-<div class="calc-box">
-<h3>3. Percentage Increase or Decrease</h3>
-<label for="oldValue">Old Value</label>
-<input type="number" id="oldValue" placeholder="Enter old value">
-<label for="newValue">New Value</label>
-<input type="number" id="newValue" placeholder="Enter new value">
-<button class="primary" onclick="percentageChange()">Calculate</button>
-<div id="result3" class="result hidden"></div>
-</div>
-</section>
+    <section class="tool-section" id="pdf-tools">
+      <div class="panel">
+        <div class="panel-title"><span class="tool-icon">PDF</span><h2>PDF Tools</h2></div>
+        <p class="panel-intro">Merge PDF files, extract a page range or convert pages to PNG images.</p>
+        <div class="subgrid">
+          <div class="subbox"><h3>01 · PDF Merge</h3><p>Select two or more PDF files to combine them into one file.</p><label for="mergeFiles">Choose PDF files</label><input type="file" id="mergeFiles" accept=".pdf,application/pdf" multiple><button class="btn" onclick="mergePDFs()">Merge PDF Files</button><div id="mergeStatus" class="result hidden" aria-live="polite"></div></div>
+          <div class="subbox"><h3>02 · PDF Split</h3><p>Extract a range of pages into a separate PDF.</p><label for="splitFile">Choose a PDF</label><input type="file" id="splitFile" accept=".pdf,application/pdf"><label for="pageRange">Page range (example: 1-3)</label><input type="text" id="pageRange" placeholder="1-3"><button class="btn" onclick="splitPDF()">Extract Pages</button><div id="splitStatus" class="result hidden" aria-live="polite"></div></div>
+          <div class="subbox"><h3>03 · PDF to Images</h3><p>Convert every page of a PDF into a downloadable PNG image.</p><label for="imagePDF">Choose a PDF</label><input type="file" id="imagePDF" accept=".pdf,application/pdf"><button class="btn" onclick="convertPDFImages()">Convert to Images</button><div id="imageStatus" class="result hidden" aria-live="polite"></div><div id="imageDownloads" class="download-list"></div></div>
+        </div>
+        <p class="note">PDF processing happens in your browser. Files are not uploaded to this website. An internet connection is required to load the PDF processing libraries. Very large files may take longer.</p>
+      </div>
+    </section>
 
-<!-- PDF TOOLS -->
-<section class="tool">
-<h2>Free PDF Tools</h2>
-<p>Merge, split and convert PDF files in your browser.</p>
+    <section class="tool-section" id="image-compressor">
+      <div class="panel">
+        <div class="panel-title"><span class="tool-icon">▧</span><h2>Image Compressor</h2></div>
+        <p class="panel-intro">Compress an image and save a smaller JPG or WEBP copy.</p>
+        <label for="ic-file">Select image</label><input id="ic-file" type="file" accept="image/*">
+        <label for="ic-quality">Image quality: <span id="ic-quality-value">75%</span></label><input id="ic-quality" type="range" min="10" max="100" value="75">
+        <label for="ic-format">Output format</label><select id="ic-format"><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option></select>
+        <div class="btn-row"><button class="btn" id="ic-compress">Compress Image</button></div>
+        <p id="ic-status" class="note" aria-live="polite"></p>
+        <img id="ic-preview" class="preview hidden" alt="Compressed image preview">
+        <p id="ic-size" class="result hidden"></p>
+        <a id="ic-download" class="btn hidden" download="compressed-image.jpg">Download Compressed Image</a>
+      </div>
+    </section>
 
-<div class="pdf-box">
-<h3>1. PDF Merge</h3>
-<p>Select two or more PDF files to combine them into one PDF.</p>
-<input type="file" id="mergeFiles" accept=".pdf,application/pdf" multiple>
-<button class="primary" onclick="mergePDFs()">Merge PDF Files</button>
-<div id="mergeStatus" class="result hidden" aria-live="polite"></div>
-</div>
+    <section class="tool-section" id="about">
+      <div class="panel">
+        <div class="section-kicker">About SmartToolsHub</div>
+        <h2>Useful tools. No unnecessary steps.</h2>
+        <p class="section-desc">SmartToolsHub brings simple browser-based utilities together in one place. Our goal is to make everyday digital tasks easier with tools that are straightforward and free to use.</p>
+      </div>
+    </section>
+  </main>
 
-<div class="pdf-box">
-<h3>2. PDF Split</h3>
-<p>Extract a range of pages from a PDF into a new PDF.</p>
-<input type="file" id="splitFile" accept=".pdf,application/pdf">
-<label for="pageRange">Page range (example: 1-3)</label>
-<input type="text" id="pageRange" placeholder="Example: 1-3">
-<button class="primary" onclick="splitPDF()">Extract Pages</button>
-<div id="splitStatus" class="result hidden" aria-live="polite"></div>
-</div>
+  <footer class="footer"><div class="wrap"><strong>SmartToolsHub</strong><br>Simple. Smart. Free.<br><span>© 2026 SmartToolsHub. All rights reserved.</span></div></footer>
 
-<div class="pdf-box">
-<h3>3. PDF to Images</h3>
-<p>Convert PDF pages into PNG images. Each page can be downloaded separately.</p>
-<input type="file" id="imagePDF" accept=".pdf,application/pdf">
-<button class="primary" onclick="convertPDFImages()">Convert to Images</button>
-<div id="imageStatus" class="result hidden" aria-live="polite"></div>
-<div id="imageDownloads"></div>
-</div>
-
-<p class="note">PDF tools use browser-based processing. PDF files are not uploaded to our server. Large files may take longer to process. PDF conversion requires an internet connection to load its processing libraries.</p>
-</section>
-</main>
-
-<footer>
-<p>© 2026 SmartToolsHub. All rights reserved.</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-<script>
-const textInput=document.getElementById("textInput");
-
-function countText(){
- const t=textInput.value;
- const s=t.trim();
- const w=s?s.split(/\s+/).length:0;
- document.getElementById("words").textContent=w;
- document.getElementById("characters").textContent=t.length;
- document.getElementById("noSpaces").textContent=t.replace(/\s/g,"").length;
- document.getElementById("sentences").textContent=s?(s.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
- document.getElementById("paragraphs").textContent=s?s.split(/\n\s*\n/).filter(x=>x.trim()).length:0;
- document.getElementById("reading").textContent=(w?Math.max(1,Math.ceil(w/200)):0)+" min";
-}
-textInput.addEventListener("input",countText);
-
-function clearText(){textInput.value="";countText();}
-async function copyText(){
- if(!textInput.value){alert("Enter some text first.");return;}
- try{await navigator.clipboard.writeText(textInput.value);alert("Text copied!");}
- catch(e){textInput.select();document.execCommand("copy");alert("Text copied!");}
-}
-
-function calculateAge(){
- const v=document.getElementById("birthDate").value;
- const out=document.getElementById("ageResult");
- if(!v){alert("Select your date of birth.");return;}
- const [y,m,d]=v.split("-").map(Number);
- const b=new Date(y,m-1,d);
- const today=new Date();
- today.setHours(0,0,0,0);
- if(b>today){alert("Date cannot be in the future.");return;}
- let years=today.getFullYear()-y;
- let months=today.getMonth()-(m-1);
- let days=today.getDate()-d;
- if(days<0){months--;days+=new Date(today.getFullYear(),today.getMonth(),0).getDate();}
- if(months<0){years--;months+=12;}
- let nextYear=today.getFullYear();
- if(new Date(nextYear,m-1,d)<today)nextYear++;
- const next=new Date(nextYear,m-1,d);
- const left=Math.round((next-today)/86400000);
- out.textContent=years+" Years, "+months+" Months, "+days+" Days. Next birthday in "+left+" days.";
- out.classList.remove("hidden");
-}
-function clearAge(){
- document.getElementById("birthDate").value="";
- document.getElementById("ageResult").classList.add("hidden");
-}
-
-function showResult(id,msg){
- const e=document.getElementById(id);
- e.textContent=msg;
- e.classList.remove("hidden");
-}
-function findPercentage(){
- const p=parseFloat(document.getElementById("percent").value);
- const n=parseFloat(document.getElementById("total").value);
- if(!Number.isFinite(p)||!Number.isFinite(n)){alert("Enter both numbers.");return;}
- showResult("result1",p+"% of "+n+" = "+(p*n/100));
-}
-function whatPercent(){
- const a=parseFloat(document.getElementById("part").value);
- const b=parseFloat(document.getElementById("whole").value);
- if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return;}
- if(b===0){alert("Second number cannot be zero.");return;}
- showResult("result2",a+" is "+(a/b*100).toFixed(2)+"% of "+b);
-}
-function percentageChange(){
- const a=parseFloat(document.getElementById("oldValue").value);
- const b=parseFloat(document.getElementById("newValue").value);
- if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return;}
- if(a===0){alert("Old value cannot be zero.");return;}
- const c=(b-a)/Math.abs(a)*100;
- showResult("result3",(c>0?"Increase: ":c<0?"Decrease: ":"No change: ")+Math.abs(c).toFixed(2)+"%");
-}
-
-// PDF UTILITIES
-function status(id,message){
- const e=document.getElementById(id);
- e.textContent=message;
- e.classList.remove("hidden");
-}
-function downloadPDF(bytes,name){
- const blob=new Blob([bytes],{type:"application/pdf"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download=name;a.click();
- setTimeout(()=>URL.revokeObjectURL(url),2000);
-}
-function pdfReady(){
- if(!window.PDFLib){alert("PDF library did not load. Check your internet connection and refresh the page.");return false;}
- return true;
-}
-
-async function mergePDFs(){
- if(!pdfReady())return;
- const files=document.getElementById("mergeFiles").files;
- if(files.length<2){alert("Select at least two PDF files.");return;}
- try{
-  status("mergeStatus","Merging PDFs...");
-  const merged=await PDFLib.PDFDocument.create();
-  for(const file of files){
-   const bytes=await file.arrayBuffer();
-   const pdf=await PDFLib.PDFDocument.load(bytes);
-   const pages=await merged.copyPages(pdf,pdf.getPageIndices());
-   pages.forEach(p=>merged.addPage(p));
-  }
-  const result=await merged.save();
-  downloadPDF(result,"merged.pdf");
-  status("mergeStatus","Success! Your merged PDF is ready.");
- }catch(e){
-  status("mergeStatus","Could not merge these PDFs. Check that the files are valid and not password-protected.");
- }
-}
-
-async function splitPDF(){
- if(!pdfReady())return;
- const file=document.getElementById("splitFile").files[0];
- const range=document.getElementById("pageRange").value.trim();
- if(!file||!range){alert("Choose a PDF and enter a page range.");return;}
- try{
-  const source=await PDFLib.PDFDocument.load(await file.arrayBuffer());
-  const total=source.getPageCount();
-  const match=range.match(/^(\d+)\s*-\s*(\d+)$/);
-  if(!match){alert("Enter a range like 1-3.");return;}
-  const start=Number(match[1]),end=Number(match[2]);
-  if(start<1||end<start||end>total){alert("Enter a valid page range. This PDF has "+total+" pages.");return;}
-  const output=await PDFLib.PDFDocument.create();
-  const pages=await output.copyPages(source,Array.from({length:end-start+1},(_,i)=>start-1+i));
-  pages.forEach(p=>output.addPage(p));
-  downloadPDF(await output.save(),"extracted-pages.pdf");
-  status("splitStatus","Success! Pages "+start+" to "+end+" have been extracted.");
- }catch(e){
-  status("splitStatus","Could not split this PDF. Check that it is valid and not password-protected.");
- }
-}
-
-async function convertPDFImages(){
- if(!window.pdfjsLib){alert("PDF image library did not load. Check your internet connection and refresh.");return;}
- const file=document.getElementById("imagePDF").files[0];
- if(!file){alert("Choose a PDF file first.");return;}
- const downloads=document.getElementById("imageDownloads");
- downloads.innerHTML="";
- try{
-  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  status("imageStatus","Converting PDF pages...");
-  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-  for(let i=1;i<=pdf.numPages;i++){
-   const page=await pdf.getPage(i);
-   const viewport=page.getViewport({scale:1.5});
-   const canvas=document.createElement("canvas");
-   canvas.width=viewport.width;
-   canvas.height=viewport.height;
-   await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
-   const url=canvas.toDataURL("image/png");
-   const link=document.createElement("a");
-   link.href=url;
-   link.download="page-"+i+".png";
-   link.textContent="Download Page "+i+" PNG";
-   link.style.display="block";
-   link.style.margin="12px 0";
-   downloads.appendChild(link);
-  }
-  status("imageStatus","Done! "+pdf.numPages+" page images are ready below.");
- }catch(e){
-  status("imageStatus","Could not convert this PDF. Try another valid PDF file.");
- }
-}
-</script>
-
-<section id="image-compressor" style="max-width:650px;margin:30px auto;padding:22px;background:#f4f7fb;border-radius:15px;color:#222;font-family:Arial,sans-serif;">
-  <h2 style="text-align:center;color:#1769aa;">Image Compressor</h2>
-  <p style="text-align:center;">Compress your image and download it in a smaller size.</p>
-
-  <label for="ic-file"><b>Select Image:</b></label>
-  <input id="ic-file" type="file" accept="image/*" style="display:block;margin:12px 0;width:100%;">
-
-  <label for="ic-quality"><b>Image Quality: <span id="ic-quality-value">75%</span></b></label>
-  <input id="ic-quality" type="range" min="10" max="100" value="75" style="width:100%;margin:12px 0;">
-
-  <label for="ic-format"><b>Output Format:</b></label>
-  <select id="ic-format" style="display:block;width:100%;padding:10px;margin:10px 0;">
-    <option value="image/jpeg">JPG</option>
-    <option value="image/webp">WEBP</option>
-  </select>
-
-  <button id="ic-compress" style="width:100%;padding:13px;background:#1769aa;color:white;border:0;border-radius:8px;font-size:16px;cursor:pointer;">Compress Image</button>
-
-  <p id="ic-status" style="margin-top:15px;"></p>
-  <img id="ic-preview" alt="Compressed image preview" style="display:none;max-width:100%;margin:15px auto;border-radius:8px;">
-  <p id="ic-size"></p>
-  <a id="ic-download" style="display:none;background:#168447;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;" download="compressed-image.jpg">Download Compressed Image</a>
-</section>
-
-<script>
-(() => {
-  const fileInput = document.getElementById("ic-file");
-  const qualityInput = document.getElementById("ic-quality");
-  const qualityValue = document.getElementById("ic-quality-value");
-  const formatInput = document.getElementById("ic-format");
-  const compressButton = document.getElementById("ic-compress");
-  const status = document.getElementById("ic-status");
-  const preview = document.getElementById("ic-preview");
-  const sizeText = document.getElementById("ic-size");
-  const download = document.getElementById("ic-download");
-
-  let imageUrl = null;
-
-  qualityInput.addEventListener("input", () => {
-    qualityValue.textContent = qualityInput.value + "%";
-  });
-
-  compressButton.addEventListener("click", () => {
-    const file = fileInput.files[0];
-
-    if (!file) {
-      status.textContent = "Please select an image first.";
-      return;
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    const textInput=document.getElementById("textInput");
+    function countText(){
+      const t=textInput.value,s=t.trim(),w=s?s.split(/\s+/).length:0;
+      document.getElementById("words").textContent=w;
+      document.getElementById("characters").textContent=t.length;
+      document.getElementById("noSpaces").textContent=t.replace(/\s/g,"").length;
+      document.getElementById("sentences").textContent=s?(s.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
+      document.getElementById("paragraphs").textContent=s?s.split(/\n\s*\n/).filter(x=>x.trim()).length:0;
+      document.getElementById("reading").textContent=(w?Math.max(1,Math.ceil(w/200)):0)+" min";
     }
-
-    if (!file.type.startsWith("image/")) {
-      status.textContent = "Please select a valid image.";
-      return;
+    textInput.addEventListener("input",countText);
+    function clearText(){textInput.value="";countText()}
+    async function copyText(){
+      if(!textInput.value){alert("Enter some text first.");return}
+      try{await navigator.clipboard.writeText(textInput.value);alert("Text copied!")}
+      catch(e){textInput.select();document.execCommand("copy");alert("Text copied!")}
     }
-
-    status.textContent = "Compressing image...";
-    preview.style.display = "none";
-    download.style.display = "none";
-    sizeText.textContent = "";
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const img = new Image();
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        const format = formatInput.value;
-        const quality = Number(qualityInput.value) / 100;
-
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            status.textContent = "Compression failed. Try another image.";
-            return;
-          }
-
-          if (imageUrl) URL.revokeObjectURL(imageUrl);
-          imageUrl = URL.createObjectURL(blob);
-
-          preview.src = imageUrl;
-          preview.style.display = "block";
-
-          const originalKB = (file.size / 1024).toFixed(1);
-          const compressedKB = (blob.size / 1024).toFixed(1);
-          const saved = ((1 - blob.size / file.size) * 100).toFixed(1);
-
-          sizeText.textContent =
-            "Original: " + originalKB + " KB | Compressed: " +
-            compressedKB + " KB | " +
-            (blob.size <= file.size ? saved + "% smaller" : Math.abs(saved) + "% larger");
-
-          const extension = format === "image/webp" ? "webp" : "jpg";
-          download.href = imageUrl;
-          download.download = "compressed-image." + extension;
-          download.style.display = "inline-block";
-
-          status.textContent = "Image compression complete!";
-        }, format, quality);
+    function calculateAge(){
+      const v=document.getElementById("birthDate").value,out=document.getElementById("ageResult");
+      if(!v){alert("Select your date of birth.");return}
+      const [y,m,d]=v.split("-").map(Number),b=new Date(y,m-1,d),today=new Date();
+      today.setHours(0,0,0,0);
+      if(b>today){alert("Date cannot be in the future.");return}
+      let years=today.getFullYear()-y,months=today.getMonth()-(m-1),days=today.getDate()-d;
+      if(days<0){months--;days+=new Date(today.getFullYear(),today.getMonth(),0).getDate()}
+      if(months<0){years--;months+=12}
+      let nextYear=today.getFullYear();if(new Date(nextYear,m-1,d)<today)nextYear++;
+      const next=new Date(nextYear,m-1,d),left=Math.round((next-today)/86400000);
+      out.textContent=years+" Years, "+months+" Months, "+days+" Days. Next birthday in "+left+" days.";
+      out.classList.remove("hidden");
+    }
+    function clearAge(){document.getElementById("birthDate").value="";document.getElementById("ageResult").classList.add("hidden")}
+    function showResult(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.remove("hidden")}
+    function findPercentage(){
+      const p=parseFloat(document.getElementById("percent").value),n=parseFloat(document.getElementById("total").value);
+      if(!Number.isFinite(p)||!Number.isFinite(n)){alert("Enter both numbers.");return}
+      showResult("result1",p+"% of "+n+" = "+(p*n/100));
+    }
+    function whatPercent(){
+      const a=parseFloat(document.getElementById("part").value),b=parseFloat(document.getElementById("whole").value);
+      if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return}
+      if(b===0){alert("Second number cannot be zero.");return}
+      showResult("result2",a+" is "+(a/b*100).toFixed(2)+"% of "+b);
+    }
+    function percentageChange(){
+      const a=parseFloat(document.getElementById("oldValue").value),b=parseFloat(document.getElementById("newValue").value);
+      if(!Number.isFinite(a)||!Number.isFinite(b)){alert("Enter both numbers.");return}
+      if(a===0){alert("Old value cannot be zero.");return}
+      const c=(b-a)/Math.abs(a)*100;
+      showResult("result3",(c>0?"Increase: ":c<0?"Decrease: ":"No change: ")+Math.abs(c).toFixed(2)+"%");
+    }
+    function status(id,message){const e=document.getElementById(id);e.textContent=message;e.classList.remove("hidden")}
+    function downloadPDF(bytes,name){
+      const blob=new Blob([bytes],{type:"application/pdf"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+      a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+    }
+    function pdfReady(){if(!window.PDFLib){alert("PDF library did not load. Check your internet connection and refresh.");return false}return true}
+    async function mergePDFs(){
+      if(!pdfReady())return;
+      const files=document.getElementById("mergeFiles").files;if(files.length<2){alert("Select at least two PDF files.");return}
+      try{
+        status("mergeStatus","Merging PDFs...");
+        const merged=await PDFLib.PDFDocument.create();
+        for(const file of files){const pdf=await PDFLib.PDFDocument.load(await file.arrayBuffer());const pages=await merged.copyPages(pdf,pdf.getPageIndices());pages.forEach(p=>merged.addPage(p))}
+        downloadPDF(await merged.save(),"merged.pdf");status("mergeStatus","Success! Your merged PDF is ready.");
+      }catch(e){status("mergeStatus","Could not merge these PDFs. Check that the files are valid and not password-protected.")}
+    }
+    async function splitPDF(){
+      if(!pdfReady())return;
+      const file=document.getElementById("splitFile").files[0],range=document.getElementById("pageRange").value.trim();
+      if(!file||!range){alert("Choose a PDF and enter a page range.");return}
+      try{
+        const source=await PDFLib.PDFDocument.load(await file.arrayBuffer()),total=source.getPageCount(),match=range.match(/^(\d+)\s*-\s*(\d+)$/);
+        if(!match){alert("Enter a range like 1-3.");return}
+        const start=Number(match[1]),end=Number(match[2]);
+        if(start<1||end<start||end>total){alert("Enter a valid page range. This PDF has "+total+" pages.");return}
+        status("splitStatus","Extracting pages...");
+        const output=await PDFLib.PDFDocument.create(),pages=await output.copyPages(source,Array.from({length:end-start+1},(_,i)=>start-1+i));
+        pages.forEach(p=>output.addPage(p));downloadPDF(await output.save(),"extracted-pages.pdf");
+        status("splitStatus","Success! Pages "+start+" to "+end+" have been extracted.");
+      }catch(e){status("splitStatus","Could not split this PDF. Check that it is valid and not password-protected.")}
+    }
+    async function convertPDFImages(){
+      if(!window.pdfjsLib){alert("PDF image library did not load. Check your internet connection and refresh.");return}
+      const file=document.getElementById("imagePDF").files[0];if(!file){alert("Choose a PDF file first.");return}
+      const downloads=document.getElementById("imageDownloads");downloads.innerHTML="";
+      try{
+        pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        status("imageStatus","Converting PDF pages...");
+        const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+        for(let i=1;i<=pdf.numPages;i++){
+          const page=await pdf.getPage(i),viewport=page.getViewport({scale:1.5}),canvas=document.createElement("canvas");
+          canvas.width=viewport.width;canvas.height=viewport.height;
+          await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
+          const url=canvas.toDataURL("image/png"),link=document.createElement("a");
+          link.href=url;link.download="page-"+i+".png";link.textContent="Download Page "+i+" PNG";downloads.appendChild(link);
+        }
+        status("imageStatus","Done! "+pdf.numPages+" page images are ready below.");
+      }catch(e){status("imageStatus","Could not convert this PDF. Try another valid PDF file.")}
+    }
+    const qualityInput=document.getElementById("ic-quality"),qualityValue=document.getElementById("ic-quality-value");
+    qualityInput.addEventListener("input",()=>qualityValue.textContent=qualityInput.value+"%");
+    let imageUrl=null;
+    document.getElementById("ic-compress").addEventListener("click",()=>{
+      const file=document.getElementById("ic-file").files[0],statusText=document.getElementById("ic-status"),preview=document.getElementById("ic-preview"),sizeText=document.getElementById("ic-size"),download=document.getElementById("ic-download");
+      if(!file){statusText.textContent="Please select an image first.";return}
+      if(!file.type.startsWith("image/")){statusText.textContent="Please select a valid image.";return}
+      statusText.textContent="Compressing image...";preview.classList.add("hidden");download.classList.add("hidden");sizeText.classList.add("hidden");
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=new Image();
+        img.onload=()=>{
+          const canvas=document.createElement("canvas");canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+          canvas.getContext("2d").drawImage(img,0,0);
+          const format=document.getElementById("ic-format").value,quality=Number(qualityInput.value)/100;
+          canvas.toBlob(blob=>{
+            if(!blob){statusText.textContent="Compression failed. Try another image.";return}
+            if(imageUrl)URL.revokeObjectURL(imageUrl);imageUrl=URL.createObjectURL(blob);
+            preview.src=imageUrl;preview.classList.remove("hidden");
+            const originalKB=(file.size/1024).toFixed(1),compressedKB=(blob.size/1024).toFixed(1),saved=((1-blob.size/file.size)*100).toFixed(1);
+            sizeText.textContent="Original: "+originalKB+" KB | Compressed: "+compressedKB+" KB | Size change: "+(blob.size<=file.size?saved+"% smaller":Math.abs(saved)+"% larger");
+            sizeText.classList.remove("hidden");
+            const ext=format==="image/webp"?"webp":"jpg";download.href=imageUrl;download.download="compressed-image."+ext;download.classList.remove("hidden");
+            statusText.textContent="Image compression complete!";
+          },format,quality);
+        };
+        img.onerror=()=>statusText.textContent="Could not read this image.";img.src=reader.result;
       };
-
-      img.onerror = () => {
-        status.textContent = "Could not read this image.";
-      };
-
-      img.src = reader.result;
-    };
-
-    reader.onerror = () => {
-      status.textContent = "Could not load the selected file.";
-    };
-
-    reader.readAsDataURL(file);
-  });
-})();
-</script>
+      reader.onerror=()=>statusText.textContent="Could not load the selected file.";reader.readAsDataURL(file);
+    });
+    document.getElementById("toolSearch").addEventListener("input",function(){
+      const q=this.value.trim().toLowerCase(),cards=[...document.querySelectorAll(".tool-card")];let shown=0;
+      cards.forEach(card=>{const match=(card.dataset.search+" "+card.innerText).toLowerCase().includes(q);card.classList.toggle("hidden",!match);if(match)shown++});
+      document.getElementById("noTools").classList.toggle("hidden",shown!==0);
+      document.getElementById("toolCount").textContent=shown+" tool"+(shown===1?"":"s")+" found";
+    });
+  </script>
 </body>
 </html>
