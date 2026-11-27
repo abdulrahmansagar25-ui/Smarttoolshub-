@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Percentage Calculator Online | SmartToolsHub</title>
+<meta name="description" content="Calculate percentages instantly with this free online percentage calculator. Find percentage, increase, decrease and more.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/percentage-calculator.html">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#081225;color:#f4f7ff;font-family:Arial,sans-serif}
+header{padding:22px 7%;background:#101e38;border-bottom:1px solid #263958}
+.logo{font-size:23px;font-weight:bold;color:#54a5ff}
+.logo span{color:white}
+main{max-width:850px;margin:45px auto;padding:20px}
+h1{text-align:center;font-size:36px}
+.intro{text-align:center;color:#aab8d0;line-height:1.7}
+.panel{background:#12223e;padding:25px;border:1px solid #294267;border-radius:18px;margin-top:25px}
+.section{padding:18px 0;border-bottom:1px solid #294267}
+.section:last-child{border:0}
+h2{font-size:20px;color:#68afff}
+label{display:block;margin:12px 0 7px;color:#cbd8ec}
+input{width:100%;padding:14px;background:#09162b;color:white;border:1px solid #385477;border-radius:9px;font-size:16px}
+button{padding:13px 20px;border:0;border-radius:9px;background:#267cf0;color:white;font-weight:bold;margin-top:15px;cursor:pointer}
+.answer{color:#72c5ff;font-size:20px;font-weight:bold;margin-top:12px}
+.info{color:#bdcbe0;line-height:1.8;margin-top:35px}
+a{color:#65adff;text-decoration:none}
+footer{text-align:center;color:#8fa3c1;padding:30px}
+@media(max-width:600px){h1{font-size:29px}main{margin:20px auto}}
+</style>
+</head>
+<body>
+<header><div class="logo">Smart<span>Tools</span>Hub</div></header>
+<main>
+<h1>Free Online Percentage Calculator</h1>
+<p class="intro">Calculate percentages quickly and easily with our free online percentage calculator.</p>
+<div class="panel">
+
+<div class="section">
+<h2>What is X% of Y?</h2>
+<label>Percentage (%)</label>
+<input type="number" id="p1" placeholder="Enter percentage">
+<label>Number</label>
+<input type="number" id="n1" placeholder="Enter number">
+<button onclick="calc1()">Calculate</button>
+<div class="answer" id="r1"></div>
+</div>
+
+<div class="section">
+<h2>X is What Percentage of Y?</h2>
+<label>First Number</label>
+<input type="number" id="x2" placeholder="Enter first number">
+<label>Total Number</label>
+<input type="number" id="y2" placeholder="Enter total number">
+<button onclick="calc2()">Calculate</button>
+<div class="answer" id="r2"></div>
+</div>
+
+<div class="section">
+<h2>Percentage Increase or Decrease</h2>
+<label>Original Value</label>
+<input type="number" id="old" placeholder="Enter original value">
+<label>New Value</label>
+<input type="number" id="new" placeholder="Enter new value">
+<button onclick="calc3()">Calculate</button>
+<div class="answer" id="r3"></div>
+</div>
+</div>
+
+<section class="info">
+<h2>What is a Percentage Calculator?</h2>
+<p>A percentage calculator is a simple tool that helps you calculate percentages, find percentage values and compare changes between numbers.</p>
+<h2>How to Use This Tool</h2>
+<p>Enter your numbers in the required fields and press Calculate. Your result will appear instantly.</p>
+<h2>Why Use SmartToolsHub?</h2>
+<p>SmartToolsHub provides free and easy online tools without registration or payment.</p>
+<p><a href="index.html">← Back to SmartToolsHub Home</a></p>
+</section>
+</main>
+<footer>© 2026 SmartToolsHub. All Rights Reserved.</footer>
+<script>
+function val(id){return parseFloat(document.getElementById(id).value)}
+function show(id,msg){document.getElementById(id).textContent=msg}
+function calc1(){
+let p=val('p1'),n=val('n1');
+if(!Number.isFinite(p)||!Number.isFinite(n)){show('r1','Please enter both numbers.');return}
+show('r1',(p/100*n).toLocaleString(undefined,{maximumFractionDigits:6}));
+}
+function calc2(){
+let x=val('x2'),y=val('y2');
+if(!Number.isFinite(x)||!Number.isFinite(y)){show('r2','Please enter both numbers.');return}
+if(y===0){show('r2','Total number cannot be zero.');return}
+show('r2',((x/y)*100).toFixed(2)+'%');
+}
+function calc3(){
+let a=val('old'),b=val('new');
+if(!Number.isFinite(a)||!Number.isFinite(b)){show('r3','Please enter both numbers.');return}
+if(a===0){show('r3','Original value cannot be zero.');return}
+let change=((b-a)/Math.abs(a))*100;
+show('r3',(change>0?'Increase: ':change<0?'Decrease: ':'No change: ')+Math.abs(change).toFixed(2)+'%');
+}
+</script>
+</body>
+</html>
