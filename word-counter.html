@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Word Counter Online | SmartToolsHub</title>
+<meta name="description" content="Count words, characters, sentences and paragraphs instantly with SmartToolsHub's free online Word Counter.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abdulrahmansagar25-ui.github.io/Smarttoolshub-/word-counter.html">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#081225;color:#f4f7ff;font-family:Arial,sans-serif}
+header{padding:22px 7%;background:#101e38;border-bottom:1px solid #263958}
+.logo{font-size:23px;font-weight:bold;color:#54a5ff}
+.logo span{color:white}
+main{max-width:900px;margin:55px auto;padding:20px}
+h1{font-size:38px;text-align:center}
+.intro{text-align:center;color:#aab8d0;line-height:1.7}
+.panel{background:#12223e;padding:25px;border:1px solid #294267;border-radius:18px;margin-top:30px}
+textarea{width:100%;height:230px;padding:18px;background:#09162b;color:white;border:1px solid #385477;border-radius:12px;font-size:16px;resize:vertical;outline:none}
+textarea:focus{border-color:#4b9cff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.stat{background:#0b1930;padding:18px 8px;text-align:center;border-radius:12px}
+.stat strong{display:block;color:#58a8ff;font-size:27px;margin-bottom:7px}
+.stat span{font-size:13px;color:#b8c7df}
+button{padding:12px 20px;border:0;border-radius:9px;background:#267cf0;color:white;font-weight:bold;margin-top:15px;cursor:pointer}
+button:hover{background:#4594ff}
+.info{color:#bdcbe0;line-height:1.8;margin-top:35px}
+a{color:#65adff;text-decoration:none}
+footer{text-align:center;color:#8fa3c1;padding:30px}
+@media(max-width:600px){h1{font-size:29px}.stats{grid-template-columns:repeat(2,1fr)}main{margin:25px auto}}
+</style>
+</head>
+<body>
+<header><div class="logo">Smart<span>Tools</span>Hub</div></header>
+<main>
+<h1>Free Online Word Counter</h1>
+<p class="intro">Count words, characters, sentences and paragraphs instantly. A simple and free tool for students, writers and professionals.</p>
+
+<div class="panel">
+<textarea id="text" placeholder="Start typing or paste your text here..." oninput="countText()"></textarea>
+<div class="stats">
+<div class="stat"><strong id="words">0</strong><span>Words</span></div>
+<div class="stat"><strong id="chars">0</strong><span>Characters</span></div>
+<div class="stat"><strong id="sentences">0</strong><span>Sentences</span></div>
+<div class="stat"><strong id="paragraphs">0</strong><span>Paragraphs</span></div>
+</div>
+<button onclick="clearText()">Clear Text</button>
+<button onclick="copyText()">Copy Text</button>
+</div>
+
+<section class="info">
+<h2>What is a Word Counter?</h2>
+<p>A word counter is an online tool that counts the number of words and characters in your text. It helps students, bloggers, writers and professionals check their writing quickly.</p>
+<h2>How to Use This Tool</h2>
+<p>Type or paste your text into the box. The word, character, sentence and paragraph counts update automatically.</p>
+<h2>Why Use SmartToolsHub?</h2>
+<p>SmartToolsHub provides simple, free and easy-to-use online tools. No registration or payment is required.</p>
+<p><a href="index.html">← Back to SmartToolsHub Home</a></p>
+</section>
+</main>
+<footer>© 2026 SmartToolsHub. All Rights Reserved.</footer>
+<script>
+function countText(){
+const t=document.getElementById('text').value;
+const words=t.trim()?t.trim().split(/\s+/).length:0;
+const sentences=t.trim()?(t.match(/[.!?]+(?=\s|$)/g)||[]).length:0;
+const paragraphs=t.trim()?t.trim().split(/\n\s*\n/).filter(p=>p.trim()).length:0;
+document.getElementById('words').textContent=words;
+document.getElementById('chars').textContent=t.length;
+document.getElementById('sentences').textContent=sentences;
+document.getElementById('paragraphs').textContent=paragraphs;
+}
+function clearText(){
+document.getElementById('text').value='';
+countText();
+}
+function copyText(){
+const t=document.getElementById('text').value;
+if(t) navigator.clipboard.writeText(t).then(()=>alert('Text copied!'));
+}
+</script>
+</body>
+</html>
